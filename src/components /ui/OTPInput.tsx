@@ -15,6 +15,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) =>
     if (isNaN(Number(val))) return;
 
     const newCode = [...code];
+
     // Handle paste or single digit
     if (val.length > 1) {
       const pasteData = val.split('').slice(0, length - idx);
@@ -29,7 +30,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) =>
       setCode(newCode);
       if (val && idx < length - 1) inputs.current[idx + 1]?.focus();
     }
-    
+
     if (newCode.every(c => c !== '')) onComplete(newCode.join(''));
   };
 
@@ -44,7 +45,7 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) =>
       {code.map((char, idx) => (
         <input
           key={idx}
-          ref={(el) => inputs.current[idx] = el}
+          ref={(el) => { inputs.current[idx] = el; }} // ✅ Fix: return void
           type="text"
           maxLength={6}
           value={char}
@@ -52,7 +53,9 @@ export const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) =>
           onKeyDown={(e) => handleKeyDown(e, idx)}
           className={cn(
             "w-10 h-12 lg:w-12 lg:h-14 text-center text-xl font-bold rounded-lg border bg-white focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all",
-            char ? "border-brand-primary ring-brand-primary/20" : "border-slate-200 focus:ring-brand-primary focus:border-brand-primary"
+            char
+              ? "border-brand-primary ring-brand-primary/20"
+              : "border-slate-200 focus:ring-brand-primary focus:border-brand-primary"
           )}
         />
       ))}

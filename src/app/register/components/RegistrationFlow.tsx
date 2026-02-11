@@ -11,16 +11,38 @@ import VerifyStep from "./steps/VerifyStep";
 export default function RegistrationFlow() {
   const [step, setStep] = useState(1);
 
+  // Centralized form data
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    dob: "",
+    street: "",
+    city: "",
+    zip: "",
+    idFile: null as File | null,
+  });
+
   const renderStep = () => {
     switch (step) {
       case 1:
-        return <RegisterStep onNext={() => setStep(2)} />;
-      case 2:
-        return <KycStep onNext={() => setStep(3)} />;
-      case 3:
         return (
-          <VerifyStep />
+          <RegisterStep
+            data={formData}
+            setData={setFormData}
+            onNext={() => setStep(2)}
+          />
         );
+      case 2:
+        return (
+          <KycStep
+            data={formData}
+            setData={setFormData}
+            onNext={() => setStep(3)}
+          />
+        );
+      case 3:
+        return <VerifyStep data={formData} />;
       default:
         return null;
     }
@@ -42,7 +64,6 @@ export default function RegistrationFlow() {
           >
             {renderStep()}
 
-            {/* Optional Back Button inside the step card */}
             {step > 1 && (
               <button
                 onClick={() => setStep(step - 1)}

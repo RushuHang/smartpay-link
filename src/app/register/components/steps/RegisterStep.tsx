@@ -11,6 +11,8 @@ import Link from "next/link";
 import { cn } from "@/src/lib/utils";
 
 type Props = {
+  data: any;
+  setData: (data: any) => void;
   onNext: () => void;
 };
 
@@ -23,25 +25,20 @@ const registerSchema = z.object({
     .regex(/[0-9]/, "Needs a number"),
 });
 
-export default function RegisterStep({ onNext }: Props) {
+export default function RegisterStep({ data, setData, onNext }: Props) {
   const [showPass, setShowPass] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
     resolver: zodResolver(registerSchema),
+    defaultValues: data
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-    onNext(); // Move to KYC step
+  const onSubmit = (form: any) => {
+    setData({ ...data, ...form });
+    onNext();
   };
 
   const password = watch("password") || "";
-
   const strength = [
     password.length >= 8,
     /[A-Z]/.test(password),
@@ -51,20 +48,16 @@ export default function RegisterStep({ onNext }: Props) {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
       <div>
         <h2 className="text-xl font-bold text-brand-navy flex items-center gap-2">
-          <ShieldCheck size={20} className="text-brand-primary" />
-          Create Account
+          <ShieldCheck size={20} className="text-brand-primary" /> Create Account
         </h2>
         <p className="text-sm text-slate-500 mt-1">
           Join 50,000+ users managing finance smarter.
         </p>
       </div>
 
-      {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Personal Info */}
         <div className="space-y-6">
           <h3 className="text-lg font-semibold text-brand-navy">
             Personal Information
@@ -88,7 +81,6 @@ export default function RegisterStep({ onNext }: Props) {
             {...register("email")}
           />
 
-          {/* Password */}
           <div className="space-y-1">
             <Input
               id="pass"
@@ -96,10 +88,7 @@ export default function RegisterStep({ onNext }: Props) {
               type={showPass ? "text" : "password"}
               icon={<Lock size={18} />}
               endIcon={
-                <button
-                  type="button"
-                  onClick={() => setShowPass(!showPass)}
-                >
+                <button type="button" onClick={() => setShowPass(!showPass)}>
                   {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
                 </button>
               }
@@ -107,40 +96,30 @@ export default function RegisterStep({ onNext }: Props) {
               {...register("password")}
             />
 
-            {/* Strength Bar */}
             <div className="flex gap-1 h-1 mt-2">
-              {[1, 2, 3, 4].map((level) => (
+              {[1, 2, 3, 4].map(level => (
                 <div
                   key={level}
                   className={cn(
                     "h-full flex-1 rounded-full transition-all duration-300",
                     strength >= level
-                      ? strength > 2
-                        ? "bg-green-500"
-                        : "bg-yellow-500"
+                      ? strength > 2 ? "bg-green-500" : "bg-yellow-500"
                       : "bg-slate-100"
                   )}
                 />
               ))}
             </div>
-
             <p className="text-xs text-slate-400 text-right">
               {strength < 2 ? "Weak" : strength < 4 ? "Good" : "Strong"}
             </p>
           </div>
         </div>
 
-        {/* Submit */}
-        <Button type="submit" className="w-full">
-          Get Started
-        </Button>
+        <Button type="submit" className="w-full">Get Started</Button>
 
         <div className="text-center text-sm text-slate-500">
           Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-brand-primary font-semibold hover:underline"
-          >
+          <Link href="/" className="text-brand-primary font-semibold hover:underline">
             Log in
           </Link>
         </div>

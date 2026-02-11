@@ -1,10 +1,10 @@
 type Props = {
   currentStep: number;
-  onStepClick?: (step: number) => void; // allow step click
+  onStepClick?: (step: number) => void;
 };
 
 export default function StepIndicator({ currentStep, onStepClick }: Props) {
-  const steps = ["Register", "KYC", "Verify"];
+  const steps = ["Register", "Verification", "Verify"];
 
   return (
     <div className="mb-8">
@@ -12,7 +12,7 @@ export default function StepIndicator({ currentStep, onStepClick }: Props) {
         {steps.map((label, index) => {
           const stepNumber = index + 1;
           const active = stepNumber === currentStep;
-          const clickable = stepNumber < currentStep; // only previous steps are clickable
+          const clickable = stepNumber < currentStep;
 
           return (
             <div key={label} className="flex-1 text-center">

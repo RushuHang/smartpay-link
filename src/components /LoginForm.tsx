@@ -9,54 +9,59 @@ import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
 import Link from "next/link";
-import { cn } from "@/src/lib/utils";
 
-// Zod Schema with preprocessing for boolean
+// Zod Schema
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  rememberMe: z.preprocess((val) => !!val, z.boolean().default(false)),
+  rememberMe: z.boolean().optional(), // optional because checkbox may be unchecked
 });
 
+// Use Zod inference for FormData
 type FormData = z.infer<typeof formSchema>;
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // UseForm with Zod resolver and default values
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: { rememberMe: false }, // ensure checkbox is unchecked by default
   });
 
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
+    // Ensure rememberMe is always boolean
+    const submitData = { ...data, rememberMe: data.rememberMe ?? false };
+    console.log("Login Data:", submitData);
+
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log("Login Data:", data);
     setIsLoading(false);
   };
 
   return (
-    <div className="min-w-125 bg-brand-light/30 flex items-center justify-center p-4">
+    <div className="w-full bg-brand-light/30 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden"
       >
         {/* Header */}
-        <div className="bg-brand-navy p-6 text-white flex justify-between items-center">
+        <div className="p-6 text-black flex justify-between items-center">
           <div>
             <h2 className="text-xl font-bold flex items-center gap-2">
               <ShieldCheck size={20} className="text-brand-primary" /> Welcome Back
             </h2>
-            <p className="text-blue-200 text-sm mt-1">
+            <p className="text-black text-sm mt-2">
               Sign in to access your digital banking dashboard
             </p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="p-8 space-y-8">
-          {/* Email Field */}
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+            {/* Email */}
             <Input
               id="email"
               label="Email Address"
@@ -67,7 +72,7 @@ export default function LoginForm() {
               {...register("email")}
             />
 
-            {/* Password Field */}
+            {/* Password */}
             <Input
               id="password"
               label="Password"

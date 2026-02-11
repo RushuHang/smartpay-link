@@ -19,7 +19,7 @@ export default function LoginPage() {
           <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
             <ShieldCheck className="w-8 h-8 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-wide">FINCORP</span>
+          <span className="text-xl font-bold tracking-wide">Smart Link</span>
         </div>
 
         {/* Hero Text */}
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
         {/* Footer / Copyright */}
         <div className="relative z-10 text-xs text-blue-200/60 mt-8 lg:mt-0">
-          © 2024 Fincorp Technologies. All rights reserved.
+          © 2024 Smart Link Technologies. All rights reserved.
         </div>
       </div>
 

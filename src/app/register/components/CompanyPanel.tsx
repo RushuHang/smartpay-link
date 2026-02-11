@@ -22,16 +22,16 @@ export default function CompanyPanel() {
           <div className="bg-white/10 p-2 rounded-lg backdrop-blur-sm">
             <ShieldCheck className="w-8 h-8 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-wide">FINCORP</span>
+          <span className="text-xl font-bold tracking-wide">Smart Link</span>
         </div>
 
         {/* Hero Text */}
         <div className="relative z-10 mt-12 lg:mt-0 max-w-lg">
           <h1 className="text-4xl lg:text-5xl font-bold leading-tight mb-6">
-            Create Your Fincorp Account
+            Create Your Smart Link Account
           </h1>
           <p className="text-lg text-blue-100 leading-relaxed mb-8">
-            Join Fincorp today and experience secure, next-generation digital banking. 
+            Join Smart Link today and experience secure, next-generation digital banking. 
             Enjoy real-time insights, zero-fee international transfers, 
             and iron-clad security.
           </p>
@@ -39,7 +39,7 @@ export default function CompanyPanel() {
 
         {/* Footer */}
         <div className="relative z-10 text-xs text-blue-200/60 mt-8 lg:mt-0">
-          © 2024 Fincorp Technologies. All rights reserved.
+          © 2024 Smart Link Technologies. All rights reserved.
         </div>
 
     
