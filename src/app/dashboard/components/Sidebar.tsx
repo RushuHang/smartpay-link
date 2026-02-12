@@ -14,10 +14,7 @@ export default function Sidebar() {
       <div className="absolute -top-20 -right-20 w-64 h-64 bg-brand-primary blur-3xl rounded-full opacity-40 mix-blend-overlay" />
 
       {/* Clickable Logo */}
-      <div
-        className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer"
-        onClick={() => router.push("/dashboard")}
-      >
+      <div className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer" onClick={() => router.push("/dashboard")}>
         <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
           <ShieldCheck className="w-6 h-6 text-white" />
         </div>
@@ -51,21 +48,20 @@ export default function Sidebar() {
               <div className="text-sm font-bold text-white">John Carter</div>
             </div>
           </div>
-          <div className="p-1.5 rounded-lg bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
-            <Sparkles className="w-3.5 h-3.5 text-brand-primary" />
-          </div>
         </div>
         {/* Progress Bar */}
         <div className="space-y-1.5">
-          <div className="flex justify-between text-[10px] font-medium">
-            <span className="text-slate-300">Setup Progress</span>
+          <div className="flex justify-between text-[10px] font-light tracking-wider">
+            <span className="text-slate-100">Setup Progress</span>
             <span className="text-white">40%</span>
           </div>
           <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden">
-            <div className="h-full w-[40%] bg-gradient-to-r from-blue-400 to-brand-primary rounded-full"></div>
+            <div className="h-full w-[40%] bg-linear-to-r from-blue-400 to-brand-primary rounded-full"></div>
           </div>
-          <div className="text-[10px] text-blue-200/60 text-right cursor-pointer hover:text-white transition-colors">
-            Complete verification &rarr;
+          <div className="text-[12px] text-blue-100 text-right cursor-pointer hover:text-white transition-colors">
+            <span className="inline-block relative after:content-[''] after:absolute after:w-full after:h-px after:bg-white after:left-0 after:bottom-0 hover:after:translate-y-px after:transition-transform delay-150 duration-200">
+              Complete verification
+            </span>
           </div>
         </div>
       </div>
