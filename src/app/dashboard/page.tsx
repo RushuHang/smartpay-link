@@ -12,7 +12,7 @@ const containerVariants = {
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 50 } },
+  visible: { y: 0, opacity: 1, transition: { type: "spring" as const, stiffness: 50 } },
 };
 
 export default function DashboardPage() {
@@ -21,7 +21,7 @@ export default function DashboardPage() {
       <motion.div variants={itemVariants} className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Overview</h1>
-          <p className="text-slate-500 mt-1">Welcome back, here's your financial summary.</p>
+          <p className="text-slate-500 mt-1">Welcome back, here&apos;s your financial summary.</p>
         </div>
         <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 text-slate-700 shadow-sm transition-all">
           Download Report
@@ -36,17 +36,52 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Transactions */}
-        <motion.div variants={itemVariants} className="lg:col-span-2 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+        <motion.div
+          variants={itemVariants}
+          className="lg:col-span-2 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden"
+        >
           <div className="p-6 border-b border-slate-50 flex justify-between items-center">
             <h2 className="text-lg font-bold text-slate-800">Recent Transactions</h2>
             <button className="text-sm text-brand-primary font-semibold hover:text-brand-navy transition-colors">View All</button>
           </div>
 
           <div className="p-2">
-            <Transaction title="Netflix Subscription" category="Entertainment" date="Oct 12, 2025" amount="- $19.99" positive={false} icon={<></>} iconBg="bg-rose-50" />
-            <Transaction title="Salary Payment" category="Income" date="Oct 10, 2025" amount="+ $3,500.00" positive icon={<></>} iconBg="bg-blue-50" />
-            <Transaction title="Apple Store" category="Electronics" date="Oct 08, 2025" amount="- $1,299.00" positive={false} icon={<></>} iconBg="bg-orange-50" />
-            <Transaction title="Stripe Transfer" category="Business" date="Oct 05, 2025" amount="+ $850.00" positive icon={<></>} iconBg="bg-emerald-50" />
+            <Transaction
+              title="Netflix Subscription"
+              category="Entertainment"
+              date="Oct 12, 2025"
+              amount="- $19.99"
+              positive={false}
+              icon={<></>}
+              iconBg="bg-rose-50"
+            />
+            <Transaction
+              title="Salary Payment"
+              category="Income"
+              date="Oct 10, 2025"
+              amount="+ $3,500.00"
+              positive
+              icon={<></>}
+              iconBg="bg-blue-50"
+            />
+            <Transaction
+              title="Apple Store"
+              category="Electronics"
+              date="Oct 08, 2025"
+              amount="- $1,299.00"
+              positive={false}
+              icon={<></>}
+              iconBg="bg-orange-50"
+            />
+            <Transaction
+              title="Stripe Transfer"
+              category="Business"
+              date="Oct 05, 2025"
+              amount="+ $850.00"
+              positive
+              icon={<></>}
+              iconBg="bg-emerald-50"
+            />
           </div>
         </motion.div>
 
