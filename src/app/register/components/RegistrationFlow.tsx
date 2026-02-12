@@ -4,30 +4,30 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import StepCard from "./StepCard";
 import StepIndicator from "./StepIndicator";
-import RegisterStep from "./steps/RegisterStep";
-import KycStep from "./steps/KycStep";
+
+// Steps
+import NameStep from "./steps/NameStep";
+import PhoneStep from "./steps/PhoneStep";
+import EmailStep from "./steps/EmailStep";
+import SecurityStep from "./steps/SecurityStep";
 import VerifyStep from "./steps/VerifyStep";
 
 export default function RegistrationFlow() {
   const [step, setStep] = useState(1);
 
-  // Centralized form data
   const [formData, setFormData] = useState({
     fullName: "",
+    phone: "",
     email: "",
     password: "",
-    dob: "",
-    street: "",
-    city: "",
-    zip: "",
-    idFile: null as File | null,
+    confirmPassword: "",
   });
 
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
-          <RegisterStep
+          <NameStep
             data={formData}
             setData={setFormData}
             onNext={() => setStep(2)}
@@ -35,13 +35,29 @@ export default function RegistrationFlow() {
         );
       case 2:
         return (
-          <KycStep
+          <PhoneStep
             data={formData}
             setData={setFormData}
             onNext={() => setStep(3)}
           />
         );
       case 3:
+        return (
+          <EmailStep
+            data={formData}
+            setData={setFormData}
+            onNext={() => setStep(4)}
+          />
+        );
+      case 4:
+        return (
+          <SecurityStep
+            data={formData}
+            setData={setFormData}
+            onNext={() => setStep(5)}
+          />
+        );
+      case 5:
         return <VerifyStep data={formData} />;
       default:
         return null;
@@ -50,7 +66,11 @@ export default function RegistrationFlow() {
 
   return (
     <StepCard>
-      <StepIndicator currentStep={step} onStepClick={(s) => setStep(s)} />
+      <StepIndicator
+        key={step} // force remount
+        currentStep={step}
+        onStepClick={(s) => setStep(s)}
+      />
 
       <div className="flex-1 flex items-start">
         <AnimatePresence mode="wait">
@@ -64,7 +84,7 @@ export default function RegistrationFlow() {
           >
             {renderStep()}
 
-            {step > 1 && (
+            {step > 1 && step < 5 && (
               <button
                 onClick={() => setStep(step - 1)}
                 className="mt-6 w-full bg-slate-100 text-slate-700 py-3 rounded-lg hover:bg-slate-200"

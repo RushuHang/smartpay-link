@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { OTPInput } from "@/src/components /ui/OTPInput";
 import { Button } from "@/src/components /ui/Button";
 import { RefreshCw, ShieldCheck } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type Props = {
   data: any;
@@ -12,6 +13,8 @@ type Props = {
 export default function VerifyStep({ data }: Props) {
   const [timer, setTimer] = useState(30);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
+  const [otp, setOtp] = useState(""); // track OTP value
+  const router = useRouter();
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -29,23 +32,44 @@ export default function VerifyStep({ data }: Props) {
     // trigger resend API
   };
 
+  const handleVerify = () => {
+    console.log("Verifying OTP:", otp);
+    // Call your OTP verification API here
+    router.push("/dashboard");
+  };
+
   return (
     <div className="space-y-8">
+      {/* Header */}
       <div>
         <h2 className="text-xl font-bold text-brand-navy flex items-center gap-2">
-          <ShieldCheck size={20} className="text-brand-primary" /> Verify Your Email
+          <ShieldCheck size={20} className="text-brand-primary" /> Verify Your
+          Phone Number
         </h2>
         <p className="text-sm text-slate-500 mt-1">
-          We’ve sent a 6-digit code to <span className="font-semibold text-brand-navy">{data.email}</span>
+          We’ve sent a 6-digit code to{" "}
+          <span className="font-semibold text-brand-navy">{data.phone}</span>
         </p>
       </div>
 
+      {/* OTP Input */}
       <div className="flex justify-center">
-        <OTPInput onComplete={(code) => console.log("Verifying:", code)} />
+        <OTPInput 
+          value={otp}
+          onChange={(code) => setOtp(code)} // dynamically track changes
+        />
       </div>
 
-      <Button className="w-full">Verify Account</Button>
+      {/* Verify Button */}
+      <Button
+        className="w-full"
+        disabled={otp.length !== 6} // enable only when exactly 6 digits
+        onClick={handleVerify}
+      >
+        Verify Account
+      </Button>
 
+      {/* Resend Section */}
       <div className="text-sm text-slate-500 flex items-center justify-center gap-2">
         <span>Didn't receive code?</span>
         <button
@@ -53,7 +77,9 @@ export default function VerifyStep({ data }: Props) {
           disabled={isResendDisabled}
           className="font-semibold text-brand-primary disabled:text-slate-400 disabled:cursor-not-allowed flex items-center gap-1 hover:underline"
         >
-          {isResendDisabled ? `Resend in 00:${timer.toString().padStart(2, "0")}` : "Resend Code"}
+          {isResendDisabled
+            ? `Resend in 00:${timer.toString().padStart(2, "0")}`
+            : "Resend Code"}
           {!isResendDisabled && <RefreshCw size={12} />}
         </button>
       </div>
