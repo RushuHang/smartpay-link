@@ -46,42 +46,10 @@ export default function DashboardPage() {
           </div>
 
           <div className="p-2">
-            <Transaction
-              title="Netflix Subscription"
-              category="Entertainment"
-              date="Oct 12, 2025"
-              amount="- $19.99"
-              positive={false}
-              icon={<></>}
-              iconBg="bg-rose-50"
-            />
-            <Transaction
-              title="Salary Payment"
-              category="Income"
-              date="Oct 10, 2025"
-              amount="+ $3,500.00"
-              positive
-              icon={<></>}
-              iconBg="bg-blue-50"
-            />
-            <Transaction
-              title="Apple Store"
-              category="Electronics"
-              date="Oct 08, 2025"
-              amount="- $1,299.00"
-              positive={false}
-              icon={<></>}
-              iconBg="bg-orange-50"
-            />
-            <Transaction
-              title="Stripe Transfer"
-              category="Business"
-              date="Oct 05, 2025"
-              amount="+ $850.00"
-              positive
-              icon={<></>}
-              iconBg="bg-emerald-50"
-            />
+            <Transaction title="Netflix Subscription" category="Entertainment" date="Oct 12, 2025" amount="+ NPR19.99" positive={false} />
+            <Transaction title="Salary Payment" category="Income" date="Oct 10, 2025" amount="+ $3,500.00" positive />
+            <Transaction title="Apple Store" category="Electronics" date="Oct 08, 2025" amount="- $1,299.00" positive={false} />
+            <Transaction title="Stripe Transfer" category="Business" date="Oct 05, 2025" amount="+ $850.00" positive />
           </div>
         </motion.div>
 

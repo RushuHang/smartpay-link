@@ -7,7 +7,7 @@ import PaymentForm from "./PaymentForm";
 
 export default function PaymentPage() {
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-slate-50 font-sans selection:bg-brand-primary selection:text-white">
+    <div className="h-dvh w-full flex flex-col lg:flex-row font-sans selection:bg-brand-primary selection:text-white">
       <div className="w-full flex flex-col relative bg-white">
         <div className="lg:hidden p-6 pb-0 flex justify-between items-center">
           <div className="flex items-center gap-2 text-brand-navy">
@@ -18,7 +18,7 @@ export default function PaymentPage() {
         </div>
 
         {/* Main Form Container */}
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center lg:mt-0 mt-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
