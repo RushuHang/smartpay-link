@@ -47,7 +47,7 @@ export default function VerifyStep({ data }: Props) {
           Phone Number
         </h2>
         <p className="text-sm text-slate-500 mt-1">
-          We’ve sent a 6-digit code to{" "}
+          We’ve sent a 6-digit code to
           <span className="font-semibold text-brand-navy">{data.phone}</span>
         </p>
       </div>
@@ -56,7 +56,7 @@ export default function VerifyStep({ data }: Props) {
       <div className="flex justify-center">
         <OTPInput 
           value={otp}
-          onChange={(code) => setOtp(code)} // dynamically track changes
+          onChange={(code) => setOtp(code)}
         />
       </div>
 

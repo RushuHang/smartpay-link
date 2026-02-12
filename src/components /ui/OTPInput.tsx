@@ -3,6 +3,7 @@ import { cn } from '@/src/lib/utils';
 
 interface OTPInputProps {
   length?: number;
+  value?: string;
   onComplete?: (code: string) => void; // ✅ optional now
   onChange?: (code: string) => void;   // optional, tracks every change
 }
