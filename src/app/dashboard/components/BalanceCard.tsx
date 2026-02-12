@@ -25,13 +25,12 @@ export default function BalanceCard({ title, amount, change, trend, data }: Bala
 
   return (
     <motion.div
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
       className="relative bg-white rounded-3xl p-6 shadow-[0_2px_20px_rgba(0,0,0,0.04)] border border-slate-100 overflow-hidden group"
     >
       <div className="flex justify-between items-start mb-4">
         <div>
           <p className="text-sm font-medium text-slate-500">{title}</p>
-          <h3 className="text-3xl font-bold text-slate-900 mt-1 tracking-tight">{amount}</h3>
+          <h3 className="text-2xl font-bold text-slate-900 mt-1 tracking-tight">{amount}</h3>
         </div>
         <div
           className={`p-2 rounded-full ${

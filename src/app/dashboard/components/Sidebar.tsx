@@ -14,10 +14,7 @@ export default function Sidebar() {
       <div className="absolute top-0 left-0 w-full h-full bg-white/5 opacity-50 pointer-events-none" />
       
       {/* Clickable Logo */}
-      <div
-        className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer"
-        onClick={() => router.push("/dashboard")}
-      >
+      <div className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer" onClick={() => router.push("/dashboard")}>
         <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
           <ShieldCheck className="w-6 h-6 text-white" />
         </div>
@@ -59,8 +56,8 @@ export default function Sidebar() {
         
         {/* Progress Bar */}
         <div className="space-y-1.5">
-          <div className="flex justify-between text-[10px] font-medium">
-            <span className="text-slate-300">Setup Progress</span>
+          <div className="flex justify-between text-[10px] font-light tracking-wider">
+            <span className="text-slate-100">Setup Progress</span>
             <span className="text-white">40%</span>
           </div>
           <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden">
