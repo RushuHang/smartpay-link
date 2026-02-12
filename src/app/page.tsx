@@ -2,7 +2,6 @@
 
 import LoginForm from '@/src/components /LoginForm'; // Assuming path exists
 import { ShieldCheck, ArrowLeft, Star, TrendingUp, CreditCard } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export default function LoginPage() {
   return (
@@ -12,7 +11,7 @@ export default function LoginPage() {
         LEFT SECTION: Immersive Brand Experience
         --------------------------------------------------
       */}
-      <div className="relative w-full lg:w-[55%] flex flex-col justify-between p-8 lg:p-16 bg-gradient-to-br from-brand-navy to-brand-primary text-white overflow-hidden">
+      <div className="relative w-full lg:w-[55%] flex flex-col justify-between p-8 lg:p-16 bg-gradient-to-br from-brand-navy to-brand-primary text-white overflow-hidden min-h-[500px] lg:min-h-screen">
         
         {/* Modern Background Texture (Grid & Blurs) */}
         <div className="absolute inset-0 z-0">
@@ -26,26 +25,16 @@ export default function LoginPage() {
         </div>
 
         {/* Brand Logo */}
-        <motion.div 
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-10 flex items-center gap-3"
-        >
+        <div className="relative z-10 flex items-center gap-3">
           <div className="bg-white/10 p-2.5 rounded-xl backdrop-blur-md border border-white/10 shadow-lg shadow-black/5">
             <ShieldCheck className="w-6 h-6 text-white" />
           </div>
           <span className="text-xl font-bold tracking-tight text-white">Smart Link</span>
-        </motion.div>
+        </div>
 
         {/* Center Content: Hero Text & Floating Visuals */}
         <div className="relative z-10 flex flex-col justify-center h-full mt-12 mb-12 lg:mt-0 lg:mb-0">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="max-w-xl"
-          >
+          <div className="max-w-xl">
             <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-200">
               Banking built for <br />
               <span className="text-white">tomorrow.</span>
@@ -74,16 +63,12 @@ export default function LoginPage() {
                     <span className="text-xs text-blue-200 font-medium">Trusted by teams worldwide</span>
                 </div>
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* Visual Element: Floating Glass Card (Abstract Representation) */}
-        <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.4 }}
-            className="absolute top-1/2 -right-24 lg:-right-32 transform -translate-y-1/2 hidden xl:block"
-        >
+        {/* Hidden on mobile/tablet (hidden), visible on large screens (xl:block) to prevent overlap */}
+        <div className="absolute top-1/2 -right-24 lg:-right-32 transform -translate-y-1/2 hidden xl:block">
             <div className="relative w-80 h-48 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl p-6 flex flex-col justify-between rotate-[-12deg] group hover:rotate-0 transition-transform duration-500">
                 <div className="flex justify-between items-start">
                     <CreditCard className="text-white/80" />
@@ -101,11 +86,7 @@ export default function LoginPage() {
             </div>
             
             {/* Secondary Floating Element */}
-            <motion.div 
-                animate={{ y: [0, -15, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-10 -left-10 w-40 p-4 bg-brand-navy/80 backdrop-blur-lg rounded-xl border border-white/10 shadow-xl"
-            >
+            <div className="absolute -bottom-10 -left-10 w-40 p-4 bg-brand-navy/80 backdrop-blur-lg rounded-xl border border-white/10 shadow-xl">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="p-1.5 bg-green-500/20 rounded-lg">
                         <TrendingUp size={16} className="text-green-400" />
@@ -113,8 +94,8 @@ export default function LoginPage() {
                     <span className="text-xs font-semibold text-white">Income</span>
                 </div>
                 <div className="text-lg font-bold text-white">+$4,250.00</div>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
 
         {/* Footer */}
         <div className="relative z-10 flex justify-between items-end text-xs text-blue-200/50">
@@ -137,31 +118,9 @@ export default function LoginPage() {
              </div>
         </div>
 
-        {/* Top Right Navigation */}
-        {/* <div className="absolute top-6 right-6 lg:top-10 lg:right-10 z-20">
-            <a href="#" className="group flex items-center gap-2 text-sm font-medium text-slate-500 hover:text-brand-primary transition-colors">
-                Back to website
-                <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform order-first" />
-            </a>
-        </div> */}
-
         {/* Main Form Container */}
         <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-20">
-            <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="w-full max-w-md space-y-8"
-            >
-                {/* <div className="text-center lg:text-left">
-                    <h2 className="text-3xl text-center font-bold tracking-tight text-slate-900">
-                        Welcome back
-                    </h2>
-                    <p className="mt-2 text-center text-sm text-slate-500">
-                        Please enter your details to access your dashboard.
-                    </p>
-                </div> */}
-
+            <div className="w-full max-w-md space-y-8">
                 {/* Login Form Wrapper */}
                 <div className="bg-white">
                     <LoginForm />
@@ -175,7 +134,7 @@ export default function LoginPage() {
                         <span className="px-2 bg-white text-slate-400">Secure connection</span>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </div>
       </div>
     </div>

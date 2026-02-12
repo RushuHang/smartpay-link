@@ -122,7 +122,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-slate-50 z-50 shadow-2xl flex flex-col border-l border-white/50"
+            className="fixed right-0 top-0 h-full w-full max-w-xl bg-slate-50 z-50 shadow-2xl flex flex-col border-l border-white/50"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-8 py-6 bg-white border-b border-slate-100">
@@ -367,7 +367,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                     </label>
                   </div>
 
-                  <label className="flex items-center justify-between mt-4 cursor-pointer group">
+                  {/* <label className="flex items-center justify-between mt-4 cursor-pointer group">
                     <span className="text-sm font-semibold text-brand-navy group-hover:text-brand-primary transition-colors">
                       Allow Partial Payments
                     </span>
@@ -375,7 +375,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                       type="checkbox"
                       {...register("allowPartialPayment")}
                     />
-                  </label>
+                  </label> */}
 
                   <div className="mt-4">
                     <label className="text-sm font-semibold text-brand-navy mb-1.5 block">

@@ -1,57 +1,217 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import BalanceCard from "./components/BalanceCard";
-import Transaction from "./components/Transaction";
-import SideWidget from "./components/SideWidget";
+import React from 'react';
+import { 
+  Layout, 
+  Card, 
+  Row, 
+  Col, 
+  Typography, 
+  Button, 
+  Tag, 
+  Statistic, 
+  Space, 
+  Avatar 
+} from 'antd';
+import { 
+  PlusOutlined, 
+  ArrowUpOutlined, 
+  LinkOutlined, 
+  WalletOutlined, 
+  BankOutlined,
+  UserOutlined 
+} from '@ant-design/icons';
+import { 
+  AreaChart, 
+  Area, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer 
+} from 'recharts';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+const { Title, Text } = Typography;
+const { Content } = Layout;
+
+// --- 1. THEME & COLORS ---
+const colors = {
+  primary: "#0066B3",    
+  navy: "#003A66",       
+  secondary: "#003A66",  
+  lightBlue: "#E6F2FF",  
+  white: "#FFFFFF",
+  success: "#52c41a",    
+  textSecondary: "#64748b"
 };
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 50 } },
-};
+// --- 2. MOCK DATA ---
+const chartData = [
+  { name: 'Mon', income: 4000 },
+  { name: 'Tue', income: 3000 },
+  { name: 'Wed', income: 2000 },
+  { name: 'Thu', income: 2780 },
+  { name: 'Fri', income: 1890 },
+  { name: 'Sat', income: 2390 },
+  { name: 'Sun', income: 3490 },
+];
 
-export default function DashboardPage() {
-  return (
-    <motion.div initial="hidden" animate="visible" variants={containerVariants} className="max-w-6xl mx-auto space-y-8">
-      <motion.div variants={itemVariants} className="flex justify-between items-end">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Overview</h1>
-          <p className="text-slate-500 mt-1">Welcome back, here's your financial summary.</p>
+// --- 3. SUB-COMPONENTS ---
+
+const DashboardCard = ({ children, title, extra }: { children: React.ReactNode, title?: string, extra?: React.ReactNode }) => (
+  <Card 
+    bordered={false} 
+    title={title ? <span style={{ color: colors.navy, fontWeight: 600 }}>{title}</span> : null}
+    extra={extra}
+    style={{ 
+      borderRadius: '12px', 
+      boxShadow: '0 4px 20px rgba(0, 58, 102, 0.05)', 
+      height: '100%'
+    }}
+  >
+    {children}
+  </Card>
+);
+
+const StatCard = ({ title, value, prefix, icon }: any) => (
+  <DashboardCard>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div>
+        <Text type="secondary" style={{ fontSize: '14px' }}>{title}</Text>
+        <div style={{ marginTop: '8px' }}>
+          <Statistic 
+            value={value} 
+            prefix={prefix} 
+            valueStyle={{ color: colors.navy, fontWeight: 700, fontSize: '28px' }} 
+          />
         </div>
-        <button className="px-4 py-2 bg-white border border-slate-200 rounded-lg text-sm font-medium hover:bg-slate-50 text-slate-700 shadow-sm transition-all">
-          Download Report
-        </button>
-      </motion.div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <BalanceCard title="Total Balance" amount="$24,580.00" change="2.4%" trend="up" data={[40, 35, 50, 60, 75, 65, 80]} />
-        <BalanceCard title="Total Income" amount="$8,420.00" change="5.1%" trend="up" data={[20, 40, 30, 50, 45, 60, 70]} />
-        <BalanceCard title="Total Expenses" amount="$3,210.00" change="1.8%" trend="down" data={[50, 45, 40, 35, 40, 30, 25]} />
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Transactions */}
-        <motion.div variants={itemVariants} className="lg:col-span-2 bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-          <div className="p-6 border-b border-slate-50 flex justify-between items-center">
-            <h2 className="text-lg font-bold text-slate-800">Recent Transactions</h2>
-            <button className="text-sm text-brand-primary font-semibold hover:text-brand-navy transition-colors">View All</button>
-          </div>
-
-          <div className="p-2">
-            <Transaction title="Netflix Subscription" category="Entertainment" date="Oct 12, 2025" amount="- $19.99" positive={false} icon={<></>} iconBg="bg-rose-50" />
-            <Transaction title="Salary Payment" category="Income" date="Oct 10, 2025" amount="+ $3,500.00" positive icon={<></>} iconBg="bg-blue-50" />
-            <Transaction title="Apple Store" category="Electronics" date="Oct 08, 2025" amount="- $1,299.00" positive={false} icon={<></>} iconBg="bg-orange-50" />
-            <Transaction title="Stripe Transfer" category="Business" date="Oct 05, 2025" amount="+ $850.00" positive icon={<></>} iconBg="bg-emerald-50" />
-          </div>
-        </motion.div>
-
-        <SideWidget />
+      <div style={{ 
+        backgroundColor: colors.lightBlue, 
+        padding: '12px', 
+        borderRadius: '50%', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center' 
+      }}>
+        {React.cloneElement(icon, { style: { fontSize: '24px', color: colors.primary } })}
       </div>
-    </motion.div>
+    </div>
+    <div style={{ marginTop: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+      <Tag color="blue" style={{ margin: 0, borderRadius: '10px', backgroundColor: colors.lightBlue, color: colors.primary, border: 'none' }}>
+        <ArrowUpOutlined /> 12%
+      </Tag>
+      <Text type="secondary" style={{ fontSize: '12px' }}>vs last week</Text>
+    </div>
+  </DashboardCard>
+);
+
+export default function MerchantDashboard() {
+  
+  return (
+    <Layout style={{  backgroundColor: '#F5F7FA' }}>
+      <Content style={{ padding: '24px 40px' }}>
+        
+        {/* --- HEADER --- */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+          <div>
+            <Title level={2} style={{ color: colors.navy, margin: 0 }}>Dashboard</Title>
+            <Text type="secondary">Overview of your financial performance</Text>
+          </div>
+          
+        </div>
+
+        {/* --- STATS ROW --- */}
+        <Row gutter={[24, 24]}>
+          <Col xs={24} sm={12} lg={6}>
+            <StatCard title="Total Revenue" value="24,500" prefix="$" icon={<WalletOutlined />} />
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <StatCard title="Active Links" value="12" icon={<LinkOutlined />} />
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <StatCard title="Settlements Pending" value="1,250" prefix="$" icon={<BankOutlined />} />
+          </Col>
+          <Col xs={24} sm={12} lg={6}>
+            <Card 
+                bordered={false}
+                style={{ 
+                    backgroundColor: colors.navy, 
+                    borderRadius: '12px', 
+                    height: '100%',
+                    color: colors.white
+                }}
+            >
+                <Statistic 
+                    title={<span style={{ color: colors.lightBlue }}>Plan Usage</span>}
+                    value={85} 
+                    suffix="/ 100 Links"
+                    valueStyle={{ color: colors.white }}
+                />
+                <div style={{ marginTop: '12px' }}>
+                    <Text style={{ color: colors.lightBlue }}>Pro Plan Active</Text>
+                </div>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* --- MAIN CONTENT ROW --- */}
+        <Row gutter={[24, 24]} style={{ marginTop: '24px' }}>
+          
+          {/* LEFT: Revenue Chart */}
+          <Col xs={24} lg={16}>
+            <DashboardCard title="Revenue Trends">
+              <div style={{ height: 300, width: '100%' }}>
+                <ResponsiveContainer>
+                  <AreaChart data={chartData}>
+                    <defs>
+                      <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor={colors.primary} stopOpacity={0.2}/>
+                        <stop offset="95%" stopColor={colors.primary} stopOpacity={0}/>
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                    <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: colors.textSecondary }} />
+                    <YAxis axisLine={false} tickLine={false} tick={{ fill: colors.textSecondary }} />
+                    <Tooltip 
+                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                    />
+                    <Area 
+                        type="monotone" 
+                        dataKey="income" 
+                        stroke={colors.primary} 
+                        strokeWidth={3}
+                        fillOpacity={1} 
+                        fill="url(#colorIncome)" 
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </DashboardCard>
+          </Col>
+
+          {/* RIGHT: Top Links */}
+          <Col xs={24} lg={8}>
+            <DashboardCard title="Top Performing Links">
+              <Space direction="vertical" style={{ width: '100%' }} size="middle">
+                  {['Summer Sale 2024', 'Consultation', 'E-Book V1'].map((item, index) => (
+                      <div key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '12px', borderBottom: index < 2 ? '1px solid #f0f0f0' : 'none' }}>
+                          <Space>
+                              <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: colors.primary }}></div>
+                              <Text strong style={{ color: colors.navy }}>{item}</Text>
+                          </Space>
+                          <Text type="secondary">$1,200</Text>
+                      </div>
+                  ))}
+              </Space>
+              <Button type="dashed" block style={{ marginTop: '20px', borderColor: colors.primary, color: colors.primary }}>
+                  View All Links
+              </Button>
+            </DashboardCard>
+          </Col>
+        </Row>
+
+      </Content>
+    </Layout>
   );
 }

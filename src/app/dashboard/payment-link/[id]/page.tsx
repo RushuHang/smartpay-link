@@ -72,7 +72,7 @@ export default function PaymentLinkDetailsPage() {
 
   if (!data) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center p-6">
+      <div className=" bg-[#F8FAFC] flex items-center justify-center p-6">
         <div className="text-center space-y-4">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#E6F2FF] text-[#0066B3]">
             <LinkIcon className="w-8 h-8" />
@@ -95,7 +95,7 @@ export default function PaymentLinkDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] py-12 px-4 sm:px-6">
+    <div className=" bg-[#F8FAFC] py-12 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto space-y-6">
         
         {/* Header Navigation */}
