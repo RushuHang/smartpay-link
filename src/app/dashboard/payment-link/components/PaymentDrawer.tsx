@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { Button } from "@/src/components /ui/Button";
+import { Button } from "@/components /ui/Button";
 
 interface Props {
   isOpen: boolean;

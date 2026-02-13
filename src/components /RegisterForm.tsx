@@ -9,7 +9,7 @@ import { Mail, Lock, User, Eye, EyeOff, UserPlus, ShieldCheck } from 'lucide-rea
 import { Input } from './ui/Input';
 import { Button } from './ui/Button';
 import Link from 'next/link';
-import { cn } from '@/src/lib/utils';
+import { cn } from '@/lib/utils';
 
 type Prop = {
   onNext?: () => void;

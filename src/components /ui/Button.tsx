@@ -1,7 +1,7 @@
 "use client"; // Buttons often have interactive hover/focus states
 
 import React from 'react';
-import { cn } from '@/src/lib/utils'; // Correct import from shared utils
+import { cn } from '@/lib/utils'; // Correct import from shared utils
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'outline' | 'ghost';

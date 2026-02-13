@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { OTPInput } from "@/src/components /ui/OTPInput";
-import { Button } from "@/src/components /ui/Button";
+import { OTPInput } from "@/components /ui/OTPInput";
+import { Button } from "@/components /ui/Button";
 import { RefreshCw, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 

@@ -22,7 +22,7 @@ import PaginationFooter from "./components/PaginationFooter";
 import PaymentDrawer from "./components/PaymentDrawer";
 
 import { Plus, Download } from "lucide-react";
-import { Button } from "@/src/components /ui/Button"; // ✅ fixed path
+import { Button } from "@/components /ui/Button"; // ✅ fixed path
 
 export default function PaymentLinksTable() {
   const [sorting, setSorting] = useState<SortingState>([]);

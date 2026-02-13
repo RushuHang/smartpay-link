@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { cn } from '@/src/lib/utils'; // ✅ only import
+import { cn } from '@/lib/utils'; // ✅ only import
 import { AlertCircle } from 'lucide-react';
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
