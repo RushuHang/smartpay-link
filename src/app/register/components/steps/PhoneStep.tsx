@@ -3,8 +3,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Input } from "@/src/components /ui/Input";
-import { Button } from "@/src/components /ui/Button";
+import { Input } from "@/components /ui/Input";
+import { Button } from "@/components /ui/Button";
 import { Phone, ShieldCheck } from "lucide-react";
 
 type Props = { data: any; setData: (data: any) => void; onNext: () => void };

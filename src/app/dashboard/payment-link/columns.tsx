@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, CreditCard, Calendar, MoreHorizontal } from "lucide-react";
 import { Payment } from "./types";
 import StatusBadge from "./components/StatusBadge";
-import { Button } from "@/src/components /ui/Button";
+import { Button } from "@/components /ui/Button";
 
 export const getColumns = (): ColumnDef<Payment>[] => [
   {

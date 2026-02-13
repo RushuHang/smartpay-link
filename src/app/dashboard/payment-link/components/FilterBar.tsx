@@ -3,7 +3,7 @@
 import { Search, Filter, X } from "lucide-react";
 import { cn } from "../utils";
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "@/src/components /ui/Button";
+import { Button } from "@/components /ui/Button";
 
 interface Props {
   globalFilter: string;

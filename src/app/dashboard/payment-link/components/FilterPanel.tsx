@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Table } from "@tanstack/react-table";
 import { Payment } from "../types";
-import { Button } from "@/src/components /ui/Button";
+import { Button } from "@/components /ui/Button";
 
 interface Props {
   show: boolean;

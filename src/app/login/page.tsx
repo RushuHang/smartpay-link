@@ -1,6 +1,6 @@
 "use client";
 
-import LoginForm from '@/src/components /LoginForm'; // Assuming path exists
+import LoginForm from '@/components /LoginForm'; // Assuming path exists
 import { ShieldCheck, ArrowLeft, Star, TrendingUp, CreditCard } from 'lucide-react';
 
 export default function LoginPage() {

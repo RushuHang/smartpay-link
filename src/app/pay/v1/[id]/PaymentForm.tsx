@@ -19,7 +19,7 @@ import {
   Mail,
   ShieldAlert,
 } from "lucide-react";
-import { Button } from "@/src/components /ui/Button";
+import { Button } from "@/components /ui/Button";
 
 // --- Types & Constants ---
 type PaymentStatus = "idle" | "processing" | "success" | "failed" | "expired";
