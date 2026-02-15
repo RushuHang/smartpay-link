@@ -2,7 +2,8 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import SidebarItem from "./SidebarItem";
-import { ShieldCheck, LayoutDashboard, Link, User, Sparkles } from "lucide-react";
+import { ShieldCheck, LayoutDashboard, Link as LinkIcon, User, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -30,7 +31,7 @@ export default function Sidebar() {
           onClick={() => router.push("/dashboard")}
         />
         <SidebarItem
-          icon={<Link size={20} />}
+          icon={<LinkIcon size={20} />}
           label="Payment Link"
           active={pathname === "/dashboard/payment-link"}
           onClick={() => router.push("/dashboard/payment-link")}
@@ -64,9 +65,12 @@ export default function Sidebar() {
             {/* Changed: Progress bar is now a solid color instead of a gradient */}
             <div className="h-full w-[40%] bg-white rounded-full"></div>
           </div>
-          <div className="text-[10px] text-blue-200/60 text-right cursor-pointer hover:text-white transition-colors">
-            Verify to unlock all features  &rarr;
-          </div>
+          <Link
+  href="/onboarding"
+  className="text-[10px] text-blue-200/60 text-right block cursor-pointer hover:text-white transition-colors"
+>
+  Verify to unlock all features &rarr;
+</Link>
         </div>
       </div>
     </aside>
