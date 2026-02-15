@@ -396,10 +396,10 @@ const form = useForm<AddressFormData>({
                       />
                     </FormControl>
                   </div>
-                  <div className="flex items-start gap-1.5 mt-2 text-slate-500">
+                  {/* <div className="flex items-start gap-1.5 mt-2 text-slate-500">
                     <Info className="w-3.5 h-3.5 mt-0.5 flex-shrink-0" />
                     <p className="text-[11px] leading-tight">Used to categorize your business risk profile.</p>
-                  </div>
+                  </div> */}
                   <FormMessage className="text-xs font-medium text-red-600 mt-1" />
                 </FormItem>
               )}
@@ -420,7 +420,7 @@ const form = useForm<AddressFormData>({
             
             <Button 
               type="submit" 
-              className="px-6 py-2.5 h-10 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all focus:ring-2 focus:ring-slate-900/20 focus:ring-offset-2 flex items-center gap-2"
+              // className="px-6 py-2.5 h-10 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all focus:ring-2 focus:ring-slate-900/20 focus:ring-offset-2 flex items-center gap-2"
             >
               Continue
               <ArrowRight className="w-4 h-4" />

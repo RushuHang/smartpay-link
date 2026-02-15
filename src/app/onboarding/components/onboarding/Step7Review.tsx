@@ -283,7 +283,7 @@ export function Step7Review() {
                 <Button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="px-8 py-2.5 h-11 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/20 transition-all flex items-center gap-2 min-w-[180px] justify-center"
+                    // className="px-8 py-2.5 h-11 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-lg shadow-slate-900/20 transition-all flex items-center gap-2 min-w-[180px] justify-center"
                 >
                 {isSubmitting ? (
                     <>

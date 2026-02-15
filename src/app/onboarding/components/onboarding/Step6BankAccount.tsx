@@ -34,7 +34,18 @@ import {
 } from "lucide-react";
 import { useState, ChangeEvent } from "react";
 
-const MAJOR_BANKS = ["Chase Bank", "Bank of America", "Wells Fargo", "Citibank", "Goldman Sachs", "JPMorgan Chase", "Other"];
+const MAJOR_BANKS =  [
+  "Nepal Bank Limited",
+  "Rastriya Banijya Bank",
+  "Nabil Bank",
+  "Standard Chartered Bank Nepal",
+  "Himalayan Bank",
+  "Everest Bank",
+  "NIC Asia Bank",
+  "Siddhartha Bank",
+  "Global IME Bank",
+  "Other"
+];
 
 // --- Enterprise Style Definitions ---
 const inputBaseClass =
@@ -317,7 +328,7 @@ export function Step6BankAccount() {
             
             <Button 
               type="submit" 
-              className="px-6 py-2.5 h-10 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all focus:ring-2 focus:ring-slate-900/20 focus:ring-offset-2 flex items-center gap-2"
+              // className="px-6 py-2.5 h-10 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all focus:ring-2 focus:ring-slate-900/20 focus:ring-offset-2 flex items-center gap-2"
             >
               Next Step
               <ArrowRight className="w-4 h-4" />
