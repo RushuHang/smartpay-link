@@ -2,7 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressSchema, AddressFormData } from "@/lib/schemas/onboarding";
+import type { Resolver } from "react-hook-form";
+
 import { useOnboarding } from "@/context/OnboardingContext";
 import {
   Form,
@@ -33,34 +34,68 @@ import {
   Navigation,
   Info
 } from "lucide-react";
+import { z } from "zod";
 
+// --- Types ---
+export type AddressFormData = {
+  registeredAddress: string;
+  operatingAddress: string;
+  sameAsRegistered: boolean; // always boolean
+  country: string;
+  state: string;
+  city: string;
+  postalCode: string;
+  productServiceDescription: string;
+  websiteUrl?: string; // optional
+};
+
+// --- Zod Schema ---
+export const addressSchema = z.object({
+  registeredAddress: z.string().min(5, "Registered address is required"),
+  operatingAddress: z.string().min(5, "Operating address is required"),
+  sameAsRegistered: z.boolean().default(false), 
+  country: z.string().min(1, "Country is required"),
+  state: z.string().min(1, "State is required"),
+  city: z.string().min(1, "City is required"),
+  postalCode: z.string().min(1, "Postal code is required"),
+  // Note: .nullish() or .optional() works better with .or(z.literal("")) for empty inputs
+  websiteUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
+  productServiceDescription: z
+    .string()
+    .min(10, "Product/service description must be at least 10 characters"),
+});
+
+
+
+
+// --- Constants ---
 const COUNTRIES = [{ value: "nepal", label: "Nepal" }];
-
-// --- Enterprise Style Definitions ---
 const inputBaseClass =
   "w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 text-sm rounded-lg shadow-sm focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/10 hover:border-slate-400 transition-all duration-200 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500";
-
 const labelClass = "text-sm font-medium text-slate-700 mb-1.5 block";
-
 const iconClass = "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none";
 
+// --- Component ---
 export function Step2Address() {
   const { formData, updateFormData, nextStep, previousStep } = useOnboarding();
 
-  const form = useForm<AddressFormData>({
-    resolver: zodResolver(addressSchema),
-    defaultValues: {
-      registeredAddress: (formData.registeredAddress as string) || "",
-      operatingAddress: (formData.operatingAddress as string) || "",
-      sameAsRegistered: (formData.sameAsRegistered as boolean) || false,
-      country: (formData.country as string) || "nepal",
-      state: (formData.state as string) || "",
-      city: (formData.city as string) || "",
-      postalCode: (formData.postalCode as string) || "",
-      websiteUrl: (formData.websiteUrl as string) || "",
-      productServiceDescription: (formData.productServiceDescription as string) || "",
-    },
-  });
+  // --- React Hook Form ---
+const form = useForm<AddressFormData>({
+  resolver: zodResolver(addressSchema) as Resolver<AddressFormData>,
+  defaultValues: {
+    registeredAddress: formData.registeredAddress || "",
+    operatingAddress: formData.operatingAddress || "",
+    sameAsRegistered: formData.sameAsRegistered ?? false,
+    country: formData.country || "nepal",
+    state: formData.state || "",
+    city: formData.city || "",
+    postalCode: formData.postalCode || "",
+    websiteUrl: formData.websiteUrl || "",
+    productServiceDescription: formData.productServiceDescription || "",
+  },
+});
+
+
 
   const sameAsRegistered = form.watch("sameAsRegistered");
 
@@ -73,7 +108,9 @@ export function Step2Address() {
     <div className="max-w-2xl mx-auto py-6">
       {/* Header Section */}
       <div className="mb-8 border-b border-slate-200 pb-6">
-        <h2 className="text-xl font-semibold text-slate-900 tracking-tight">Location & Presence</h2>
+        <h2 className="text-xl font-semibold text-slate-900 tracking-tight">
+          Location & Presence
+        </h2>
         <p className="text-sm text-slate-500 mt-1 max-w-lg leading-relaxed">
           Verify your physical operating locations and online presence for regulatory compliance.
         </p>
@@ -82,7 +119,7 @@ export function Step2Address() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           
-          {/* Section: Physical Address */}
+          {/* Physical Address */}
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-4">
               <div className="p-1.5 bg-slate-100 rounded-md text-slate-600">
@@ -118,7 +155,7 @@ export function Step2Address() {
               )}
             />
 
-            {/* Same as Registered Toggle */}
+            {/* Same as Registered */}
             <FormField
               control={form.control}
               name="sameAsRegistered"
@@ -156,7 +193,7 @@ export function Step2Address() {
               )}
             />
 
-            {/* Operating Address (Conditional) */}
+            {/* Operating Address */}
             {!sameAsRegistered && (
               <FormField
                 control={form.control}
@@ -183,6 +220,7 @@ export function Step2Address() {
               />
             )}
 
+            {/* Country / Postal */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Country */}
               <FormField
@@ -196,12 +234,12 @@ export function Step2Address() {
                     </label>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <FormControl>
-                         <div className="relative">
-                            <Flag className={iconClass} />
-                            <SelectTrigger className={`${inputBaseClass} pl-10 py-2.5 h-10`}>
-                              <SelectValue placeholder="Select country" />
-                            </SelectTrigger>
-                         </div>
+                        <div className="relative">
+                          <Flag className={iconClass} />
+                          <SelectTrigger className={`${inputBaseClass} pl-10 py-2.5 h-10`}>
+                            <SelectValue placeholder="Select country" />
+                          </SelectTrigger>
+                        </div>
                       </FormControl>
                       <SelectContent className="bg-white border-slate-200 rounded-lg shadow-lg">
                         {COUNTRIES.map((c) => (
@@ -220,7 +258,7 @@ export function Step2Address() {
                 )}
               />
 
-              {/* Postal Code */}
+              {/* Postal */}
               <FormField
                 control={form.control}
                 name="postalCode"
@@ -246,6 +284,7 @@ export function Step2Address() {
               />
             </div>
 
+            {/* State / City */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* State */}
               <FormField
@@ -301,7 +340,7 @@ export function Step2Address() {
 
           <div className="h-px bg-slate-100 w-full" />
 
-          {/* Section: Online Presence */}
+          {/* Online Presence */}
           <div className="space-y-6">
             <div className="flex items-center gap-2 mb-4">
               <div className="p-1.5 bg-slate-100 rounded-md text-slate-600">
@@ -367,7 +406,7 @@ export function Step2Address() {
             />
           </div>
 
-          {/* Footer Actions */}
+          {/* Footer */}
           <div className="pt-6 flex items-center justify-between border-t border-slate-100 mt-8">
             <Button
               type="button"

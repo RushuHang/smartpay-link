@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ownersSchema, OwnersFormData } from "@/lib/schemas/onboarding";
 import { useOnboarding } from "@/context/OnboardingContext";
@@ -41,21 +41,28 @@ const iconClass = "absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-4
 export function Step5Owners() {
   const { formData, updateFormData, nextStep, previousStep } = useOnboarding();
   
-  // Local state for file previews (Base64 strings for simplicity in this demo)
   const [ownerFiles, setOwnerFiles] = useState<Record<number, string>>({});
 
-  const initialOwners = (formData.owners as any) || [
-    { fullName: "", ownershipPercentage: 0, dateOfBirth: "", nationality: "", governmentIdNumber: "", email: "", phoneNumber: "" },
+  // Type-safe initial owner
+  const initialOwners: OwnersFormData["owners"] = [
+    {
+      fullName: "",
+      ownershipPercentage: 0, // number type
+      dateOfBirth: "",
+      nationality: "",
+      governmentIdNumber: "",
+      governmentIdDocument: null,
+      email: "",
+      phoneNumber: "",
+    },
   ];
 
+  // Type-safe form
   const form = useForm<OwnersFormData>({
-    resolver: zodResolver(ownersSchema),
-    defaultValues: {
-      owners: initialOwners,
-    },
+    resolver: zodResolver(ownersSchema) as Resolver<OwnersFormData>,
+    defaultValues: { owners: initialOwners },
   });
 
-  // Watch owners to map over them
   const owners = form.watch("owners");
 
   const onSubmit = (data: OwnersFormData) => {
@@ -79,9 +86,9 @@ export function Step5Owners() {
         dateOfBirth: "",
         nationality: "",
         governmentIdNumber: "",
+        governmentIdDocument: null,
         email: "",
         phoneNumber: "",
-        governmentIdDocument: "",
       },
     ]);
   };
@@ -111,7 +118,6 @@ export function Step5Owners() {
 
   return (
     <div className="max-w-3xl mx-auto py-6">
-      {/* Header Section */}
       <div className="mb-8 border-b border-slate-200 pb-6">
         <h2 className="text-xl font-semibold text-slate-900 tracking-tight">Beneficial Owners</h2>
         <p className="text-sm text-slate-500 mt-1 max-w-lg leading-relaxed">
@@ -121,14 +127,12 @@ export function Step5Owners() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          
           <div className="space-y-6">
             {owners.map((owner, index) => (
               <div 
                 key={index} 
                 className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm relative transition-all duration-300 hover:shadow-md"
               >
-                {/* Card Header */}
                 <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
                   <div className="flex items-center gap-3">
                     <div className="w-7 h-7 rounded-md bg-slate-900 flex items-center justify-center text-white font-bold text-xs">
@@ -151,7 +155,7 @@ export function Step5Owners() {
                 </div>
 
                 <div className="space-y-5">
-                  {/* Row 1: Name & Equity */}
+                  {/* Row 1 */}
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-5">
                     <div className="md:col-span-8">
                       <FormField
@@ -160,8 +164,7 @@ export function Step5Owners() {
                         render={({ field }) => (
                           <FormItem>
                             <label className={labelClass}>
-                              Full Legal Name
-                              <span className="text-red-500 ml-1">*</span>
+                              Full Legal Name<span className="text-red-500 ml-1">*</span>
                             </label>
                             <div className="relative group">
                               <User className={iconClass} />
@@ -181,17 +184,14 @@ export function Step5Owners() {
                         render={({ field }) => (
                           <FormItem>
                             <label className={labelClass}>
-                              Ownership
-                              <span className="text-red-500 ml-1">*</span>
+                              Ownership<span className="text-red-500 ml-1">*</span>
                             </label>
                             <div className="relative group">
                               <Percent className={iconClass} />
                               <FormControl>
                                 <input type="number" {...field} placeholder="0" className={`${inputBaseClass} pl-10 py-2.5`} />
                               </FormControl>
-                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">
-                                %
-                              </span>
+                              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">%</span>
                             </div>
                             <FormMessage className="text-xs font-medium text-red-600 mt-1" />
                           </FormItem>
@@ -200,17 +200,14 @@ export function Step5Owners() {
                     </div>
                   </div>
 
-                  {/* Row 2: Contact Info */}
+                  {/* Row 2 */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <FormField
                       control={form.control}
                       name={`owners.${index}.email`}
                       render={({ field }) => (
                         <FormItem>
-                          <label className={labelClass}>
-                            Email Address
-                            <span className="text-red-500 ml-1">*</span>
-                          </label>
+                          <label className={labelClass}>Email Address<span className="text-red-500 ml-1">*</span></label>
                           <div className="relative group">
                             <Mail className={iconClass} />
                             <FormControl>
@@ -239,9 +236,9 @@ export function Step5Owners() {
                     />
                   </div>
 
-                  {/* Row 3: Personal Details */}
+                  {/* Row 3 */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                     <FormField
+                    <FormField
                       control={form.control}
                       name={`owners.${index}.dateOfBirth`}
                       render={({ field }) => (
@@ -257,7 +254,7 @@ export function Step5Owners() {
                         </FormItem>
                       )}
                     />
-                     <FormField
+                    <FormField
                       control={form.control}
                       name={`owners.${index}.nationality`}
                       render={({ field }) => (
@@ -277,7 +274,7 @@ export function Step5Owners() {
 
                   <div className="h-px bg-slate-100 w-full my-2" />
 
-                  {/* Row 4: ID & Upload */}
+                  {/* Row 4: ID */}
                   <div className="grid grid-cols-1 gap-5">
                     <FormField
                       control={form.control}
@@ -297,10 +294,7 @@ export function Step5Owners() {
                     />
 
                     <div>
-                      <label className={labelClass}>
-                        Upload ID Document
-                        <span className="text-red-500 ml-1">*</span>
-                      </label>
+                      <label className={labelClass}>Upload ID Document<span className="text-red-500 ml-1">*</span></label>
                       <label 
                         className={`
                           relative flex items-center justify-between w-full p-4 
@@ -310,37 +304,35 @@ export function Step5Owners() {
                             : "border-slate-300 hover:border-slate-400 hover:bg-slate-50"}
                         `}
                       >
-                         {ownerFiles[index] ? (
-                           <div className="flex items-center gap-3 w-full">
-                             <div className="w-10 h-10 rounded-lg bg-white border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm">
-                               <FileBadge className="w-5 h-5" />
-                             </div>
-                             <div className="flex-1">
-                               <p className="text-sm font-medium text-slate-900">Document Attached</p>
-                               <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
-                                 <CheckCircle2 className="w-3 h-3" /> Ready for review
-                               </p>
-                             </div>
-                             <span className="text-xs font-medium text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm">
-                               Replace
-                             </span>
-                           </div>
-                         ) : (
-                           <div className="flex items-center gap-4 w-full">
-                             <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:shadow-sm transition-all">
-                               <UploadCloud className="w-5 h-5" />
-                             </div>
-                             <div className="flex-1">
-                               <p className="text-sm font-medium text-slate-900">
-                                 Upload Passport or ID
-                               </p>
-                               <p className="text-xs text-slate-500">JPG, PNG or PDF (Max 5MB)</p>
-                             </div>
-                             <div className="bg-slate-900 text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-sm opacity-90 group-hover:opacity-100">
-                               Select File
-                             </div>
-                           </div>
-                         )}
+                        {ownerFiles[index] ? (
+                          <div className="flex items-center gap-3 w-full">
+                            <div className="w-10 h-10 rounded-lg bg-white border border-emerald-100 flex items-center justify-center text-emerald-600 shadow-sm">
+                              <FileBadge className="w-5 h-5" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-slate-900">Document Attached</p>
+                              <p className="text-[11px] text-emerald-600 font-medium flex items-center gap-1">
+                                <CheckCircle2 className="w-3 h-3" /> Ready for review
+                              </p>
+                            </div>
+                            <span className="text-xs font-medium text-slate-500 bg-white border border-slate-200 px-3 py-1.5 rounded-md shadow-sm">
+                              Replace
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-4 w-full">
+                            <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-white group-hover:shadow-sm transition-all">
+                              <UploadCloud className="w-5 h-5" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-slate-900">Upload Passport or ID</p>
+                              <p className="text-xs text-slate-500">JPG, PNG or PDF (Max 5MB)</p>
+                            </div>
+                            <div className="bg-slate-900 text-white text-xs font-medium px-3 py-1.5 rounded-md shadow-sm opacity-90 group-hover:opacity-100">
+                              Select File
+                            </div>
+                          </div>
+                        )}
                         <input 
                           type="file" 
                           className="hidden" 
@@ -355,7 +347,6 @@ export function Step5Owners() {
             ))}
           </div>
 
-          {/* Add Owner Button */}
           <Button 
             type="button" 
             onClick={addOwner}
@@ -368,7 +359,6 @@ export function Step5Owners() {
             <span className="font-semibold text-sm">Add Another Beneficial Owner</span>
           </Button>
 
-          {/* Footer Actions */}
           <div className="pt-6 flex items-center justify-between border-t border-slate-100 mt-8">
             <Button
               type="button"

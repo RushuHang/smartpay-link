@@ -11,7 +11,7 @@ export const businessInfoSchema = z.object({
 export const addressSchema = z.object({
   registeredAddress: z.string().min(5, "Registered address is required"),
   operatingAddress: z.string().min(5, "Operating address is required"),
-  sameAsRegistered: z.boolean().default(false),
+  sameAsRegistered: z.boolean().default(false), // remove the `?`
   country: z.string().min(1, "Country is required"),
   state: z.string().min(1, "State is required"),
   city: z.string().min(1, "City is required"),
