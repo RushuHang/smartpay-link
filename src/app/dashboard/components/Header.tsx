@@ -39,7 +39,7 @@ export default function Header() {
               <p className="text-sm font-semibold text-slate-800 group-hover:text-brand-primary transition-colors">
                 John Carter
               </p>
-              <p className="text-xs text-slate-500">Admin</p>
+              <p className="text-xs text-slate-500">merchent</p>
             </div>
             <div className="w-10 h-10 rounded-full bg-linear-to-br from-brand-primary to-brand-navy text-white flex items-center justify-center shadow-lg shadow-brand-primary/20 ring-2 ring-white">
               <User className="w-5 h-5" />

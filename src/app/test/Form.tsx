@@ -15,7 +15,8 @@ import {
   ChevronLeft,
   Smartphone,
   Wallet,
-  Zap
+  Zap,
+  FileText
 } from "lucide-react";
 
 // --- Types & Constants ---
@@ -120,39 +121,30 @@ export default function RazorpayStyleSmartLink() {
             <AnimatePresence mode="wait">
               {!method ? (
                 <motion.div key="list" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-2">
-                  {/* Smart QR */}
                   <MethodRow 
                     icon={<QrCode size={18} />} 
                     title="Smart QR" 
                     subtitle="Scan with SmartQR, Fonepay, or Mobile Banking" 
                     onClick={() => setMethod('smartqr')} 
                   />
-                  
-                  {/* Card */}
                   <MethodRow 
                     icon={<CreditCard size={18} />} 
                     title="Card" 
                     subtitle="Visa, Mastercard, SCT, UnionPay" 
                     onClick={() => setMethod('sctcard')} 
                   />
-                  
-                  {/* eSewa */}
                   <MethodRow 
                     icon={<Wallet size={18} className="text-green-600" />} 
                     title="eSewa" 
                     subtitle="Pay with eSewa Mobile Wallet" 
                     onClick={() => setMethod('esewa')} 
                   />
-                  
-                  {/* Khalti - NEW */}
                   <MethodRow 
                     icon={<Wallet size={18} className="text-purple-600" />} 
                     title="Khalti" 
                     subtitle="Pay with Khalti Digital Wallet" 
                     onClick={() => setMethod('khalti')} 
                   />
-                  
-                  {/* Netbanking */}
                   <MethodRow 
                     icon={<Building size={18} />} 
                     title="Netbanking" 
@@ -163,7 +155,8 @@ export default function RazorpayStyleSmartLink() {
               ) : (
                 <motion.div key="detail" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}>
                   {method === 'smartqr' && <QRSection id={id} />}
-                  {method === 'sctcard' && <CardSection amount={data.amount} currency={data.currency} />}
+                  {/* Pass the full data object to CardSection */}
+                  {method === 'sctcard' && <CardSection data={data} />}
                   {(method === 'esewa' || method === 'khalti' || method === 'bank') && <RedirectSection method={method} />}
                 </motion.div>
               )}
@@ -209,32 +202,60 @@ function MethodRow({ icon, title, subtitle, onClick }: any) {
   );
 }
 
-function CardSection({ amount, currency }: { amount: string, currency: string }) {
+function CardSection({ data }: { data: any }) {
   return (
-    <div className="space-y-5 max-w-sm mx-auto pt-4">
+    <div className="space-y-5 max-w-sm mx-auto pt-2">
+      
+      {/* --- NEW SUMMARY CARD --- */}
+      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3">
+        <div className="flex justify-between items-start">
+          <div className="flex gap-2">
+             <div className="mt-0.5"><User size={14} className="text-slate-400" /></div>
+             <div>
+               <p className="text-[10px] font-bold text-slate-400 uppercase">Billed To</p>
+               <p className="text-xs font-bold text-slate-700">{data.customerName}</p>
+             </div>
+          </div>
+          <div className="text-right">
+             <p className="text-[10px] font-bold text-slate-400 uppercase">Invoice</p>
+             <p className="text-xs font-mono font-bold text-slate-600">{data.invoiceNumber}</p>
+          </div>
+        </div>
+        <div className="pt-2 border-t border-slate-200/60">
+           <div className="flex gap-2">
+             <div className="mt-0.5"><FileText size={14} className="text-slate-400" /></div>
+             <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">Description</p>
+                <p className="text-xs font-medium text-slate-600 leading-tight">{data.description}</p>
+             </div>
+           </div>
+        </div>
+      </div>
+      {/* ------------------------- */}
+
       <div className="space-y-4">
         <div className="relative">
           <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Card Number</label>
-          <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none transition-all" placeholder="0000 0000 0000 0000" />
+          <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none transition-all font-mono" placeholder="0000 0000 0000 0000" />
           <CreditCard className="absolute right-3 top-[34px] text-slate-300" size={18} />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Expiry</label>
-            <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none" placeholder="MM / YY" />
+            <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none font-mono" placeholder="MM / YY" />
           </div>
           <div>
             <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">CVV</label>
-            <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none" placeholder="123" />
+            <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none font-mono" placeholder="123" />
           </div>
         </div>
         <div>
            <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Card Holder Name</label>
-           <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none" placeholder="Name on Card" />
+           <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none" placeholder={data.customerName} />
         </div>
       </div>
       <button className="w-full bg-[#0066B3] text-white py-4 rounded-lg font-bold text-sm shadow-lg shadow-blue-600/10 hover:brightness-110 active:scale-[0.98] transition-all uppercase tracking-wider">
-        Pay {currency} {amount}
+        Pay {data.currency} {data.amount}
       </button>
     </div>
   );
@@ -260,10 +281,8 @@ function QRSection({ id }: { id: string }) {
 }
 
 function RedirectSection({ method }: { method: string }) {
-  // Simple styling to differentiate wallets based on selection
   const isKhalti = method === 'khalti';
   const isEsewa = method === 'esewa';
-  
   const themeColor = isKhalti ? "bg-purple-600" : isEsewa ? "bg-green-600" : "bg-slate-900";
   const logoInitial = method!.charAt(0).toUpperCase();
 

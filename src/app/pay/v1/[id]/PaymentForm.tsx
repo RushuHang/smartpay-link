@@ -6,374 +6,297 @@ import { motion, AnimatePresence } from "framer-motion";
 import QRCode from "react-qr-code";
 import {
   CreditCard,
-  Building,
   QrCode,
   ShieldCheck,
   User,
-  CheckCircle2,
   Loader2,
-  Lock,
+  Building,
+  ChevronRight,
+  ChevronLeft,
+  Smartphone,
+  Wallet,
   Zap,
-  Globe,
-  MapPin,
-  Mail,
-  ShieldAlert,
+  FileText
 } from "lucide-react";
-import { Button } from "@/components /ui/Button";
 
 // --- Types & Constants ---
 type PaymentStatus = "idle" | "processing" | "success" | "failed" | "expired";
-type PaymentMethod = "smartqr" | "sctcard" | "esewa" | "khalti" | "bank";
+type PaymentMethod = "smartqr" | "sctcard" | "esewa" | "khalti" | "bank" | null;
 
 const SCT_BLUE = "#0066B3";
-const SCT_NAVY = "#003A66";
-const SCT_LIGHT = "#E6F2FF";
 
-interface PaymentData {
-  amount: string;
-  currency: string;
-  description: string;
-  customerName: string;
-  customerEmail: string;
-  merchantName: string;
-  merchantCategory: string;
-  merchantLocation: string;
-  merchantEmail: string;
-  invoiceNumber: string;
-  subtotal: string;
-  taxAmount: string;
-}
-
-export default function SmartLinkCustomerPage() {
+export default function RazorpayStyleSmartLink() {
   const { id } = useParams() as { id: string };
-
-  // States
-  const [data, setData] = useState<PaymentData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [status, setStatus] = useState<PaymentStatus>("idle");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("smartqr");
-  const [timeLeft, setTimeLeft] = useState(900); // 15 minutes
+  const [method, setMethod] = useState<PaymentMethod>(null);
+  const [timeLeft, setTimeLeft] = useState(900);
 
-  // Mock Data Initialization
+  // Your Data
+  const data = {
+    amount: "2,450.00",
+    currency: "NPR",
+    description: "Cloud Hosting - Annual Subscription (Business Pro)",
+    customerName: "Binod Tamang",
+    customerEmail: "binod@example.com",
+    merchantName: "TechSphere Solutions Pvt. Ltd.",
+    invoiceNumber: `SL-${id?.toUpperCase() || "7789-01"}`,
+  };
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setData({
-        amount: "2450.00",
-        currency: "NPR",
-        description: "Cloud Hosting - Annual Subscription (Business Pro)",
-        customerName: "Binod Tamang",
-        customerEmail: "binod@example.com",
-        merchantName: "TechSphere Solutions Pvt. Ltd.",
-        merchantCategory: "IT Services & Software",
-        merchantLocation: "Kathmandu, Nepal",
-        merchantEmail: "billing@techsphere.com.np",
-        invoiceNumber: `SL-${id?.toUpperCase() || "7789-01"}`,
-        subtotal: "2168.14",
-        taxAmount: "281.86",
-      });
-      setLoading(false);
-    }, 800);
+    const timer = setTimeout(() => setLoading(false), 800);
     return () => clearTimeout(timer);
-  }, [id]);
+  }, []);
 
-  // Countdown Timer Logic
   useEffect(() => {
-    if (timeLeft <= 0) {
-      setStatus("expired");
-      return;
-    }
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => prev - 1);
-    }, 1000);
+    if (timeLeft <= 0) return;
+    const interval = setInterval(() => setTimeLeft((p) => p - 1), 1000);
     return () => clearInterval(interval);
   }, [timeLeft]);
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
-
-  if (loading || !data) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[#0066B3] animate-spin" />
-      </div>
-    );
-  }
+  if (loading) return <div className="h-screen flex items-center justify-center bg-white"><Loader2 className="animate-spin text-[#0066B3]" /></div>;
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 pb-20">
-      
-      {/* --- BRAND HEADER --- */}
-      <div className="bg-white border-b border-slate-100 sticky top-0 z-40">
-        <div className="max-w-6xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className={`w-9 h-9 bg-[${SCT_BLUE}] rounded-lg flex items-center justify-center text-white shadow-lg shadow-blue-200`}>
-              <ShieldCheck className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex flex-col">
-              <span className={`font-black text-xl tracking-tight leading-none text-[${SCT_NAVY}]`}>
-                Smart<span className={`text-[${SCT_BLUE}]`}> Link</span>
-              </span>
-              {/* <span className="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em]">National Payment Gateway</span> */}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-             <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-[10px] font-bold border border-green-100">
-               <ShieldCheck size={14} /> PCI-DSS COMPLIANT
-             </div>
-             <div className={`flex items-center gap-2 text-xs font-bold text-[${SCT_NAVY}] bg-[${SCT_LIGHT}] px-3 py-1.5 rounded-lg`}>
-                <Globe size={14} /> NPR
-             </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-4 md:px-8 pt-8 md:pt-10">
+    <div className="min-h-screen bg-[#F2F4F7] flex items-center justify-center p-0 md:p-4 font-sans antialiased">
+      {/* Container mimic of the Razorpay Checkout Modal */}
+      <div className="w-full max-w-[840px] bg-white md:rounded-lg shadow-2xl flex flex-col md:flex-row overflow-hidden min-h-[580px]">
         
-        {/* --- MERCHANT IDENTITY CARD --- */}
-        <div className="mb-8 bg-white rounded-[2rem] p-6 md:p-8 border border-slate-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-          <div className={`absolute top-0 right-0 w-32 h-32 bg-[${SCT_BLUE}]/5 rounded-full -mr-16 -mt-16`} />
-          
-          <div className="flex items-center gap-5 relative z-10">
-            <div className={`w-16 h-16 bg-[${SCT_NAVY}] text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-xl shadow-blue-900/10`}>
-              {data.merchantName.split(' ').map(n => n[0]).join('').substring(0,2)}
+        {/* LEFT SIDEBAR: Order Info */}
+        <div className="md:w-[340px] bg-[#F9FAFB] border-r border-slate-100 flex flex-col p-8">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-10 h-10 bg-white rounded-lg border border-slate-200 flex items-center justify-center font-black text-[#0066B3] shadow-sm">
+              {data.merchantName.charAt(0)}
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-1">
-                <h1 className={`text-xl font-black text-[${SCT_NAVY}]`}>{data.merchantName}</h1>
-                <div className="flex items-center gap-1 px-2 py-0.5 bg-blue-50 text-[#0066B3] rounded text-[10px] font-bold border border-blue-100">
-                  <ShieldCheck size={12} /> VERIFIED
-                </div>
-              </div>
-              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-500 font-medium">
-                <span className="flex items-center gap-1.5"><Building size={14} className="text-slate-300"/> {data.merchantCategory}</span>
-                <span className="flex items-center gap-1.5"><MapPin size={14} className="text-slate-300"/> {data.merchantLocation}</span>
-                <span className="flex items-center gap-1.5"><Mail size={14} className="text-slate-300"/> {data.merchantEmail}</span>
+              <h2 className="font-bold text-sm text-slate-800 leading-tight">{data.merchantName}</h2>
+              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Payment Request</p>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Amount to pay</p>
+            <div className="flex items-baseline gap-1">
+              <span className="text-xl font-bold text-slate-800">{data.currency}</span>
+              <span className="text-4xl font-black text-slate-900 tracking-tighter">{data.amount}</span>
+            </div>
+          </div>
+
+          <div className="mt-8 space-y-4">
+            <div className="p-4 bg-white rounded-xl border border-slate-100 shadow-sm">
+              <p className="text-[11px] font-bold text-slate-400 uppercase mb-2">Order Details</p>
+              <p className="text-xs font-semibold text-slate-700 leading-relaxed">{data.description}</p>
+              <div className="mt-3 pt-3 border-t border-slate-50 flex justify-between">
+                <span className="text-[10px] text-slate-400 font-bold">INVOICE</span>
+                <span className="text-[10px] text-slate-800 font-mono font-bold">{data.invoiceNumber}</span>
               </div>
             </div>
           </div>
 
-          <div className="md:text-right relative z-10 flex flex-col items-end">
-            <div className="flex items-center gap-2 text-amber-600 bg-amber-50 px-4 py-2 rounded-xl border border-amber-100 mb-1">
-              <span className="text-xs font-black uppercase tracking-wider">Expires In</span>
-              <span className="font-mono font-black text-lg">{formatTime(timeLeft)}</span>
-            </div>
-            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">Session ID: SCT-{id?.substring(0,8)}</p>
+          <div className="mt-auto pt-8">
+             <div className="flex items-center gap-2 text-slate-400">
+               <User size={14} />
+               <span className="text-xs font-medium">{data.customerEmail}</span>
+             </div>
           </div>
         </div>
 
-        {status === "expired" ? (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-4xl p-12 text-center border-2 border-dashed border-slate-200">
-            <ShieldAlert size={64} className="mx-auto text-slate-300 mb-6" />
-            <h2 className={`text-2xl font-black text-[${SCT_NAVY}] mb-2`}>Payment Link Expired</h2>
-            <p className="text-slate-500 mb-8 max-w-md mx-auto">For your security, payment links are valid for 15 minutes. Please contact the merchant to generate a new link.</p>
-            <Button className={`bg-[${SCT_BLUE}] text-white px-8 h-12 rounded-xl font-bold`}>Request New Link</Button>
-          </motion.div>
-        ) : (
-          <div className="flex flex-col lg:flex-row gap-8 items-start">
-
-            {/* === PAYMENT SELECTION (LEFT) === */}
-            <div className="w-full lg:w-7/12 order-2 lg:order-1">
-              <div className="bg-white rounded-4xl border border-slate-100 shadow-xl shadow-slate-200/40 overflow-hidden">
-                <div className="p-8 border-b border-slate-50">
-                  <h3 className={`text-xl font-black text-[${SCT_NAVY}]`}>Select Payment Method</h3>
-                  <p className="text-sm text-slate-400 mt-1 font-medium">Choose from SCT network or partner wallets</p>
-                </div>
-
-                <div className="p-8 pt-6">
-                  {/* SCT PRIMARY METHODS */}
-                  <div className="grid grid-cols-2 gap-4 mb-8">
-                    <MethodButton active={paymentMethod === 'smartqr'} onClick={() => setPaymentMethod('smartqr')} color="blue">
-                      <QrCode size={26} strokeWidth={2.5} />
-                      <span className="text-[13px] font-black uppercase tracking-tight">Smart QR</span>
-                      <span className="text-[10px] font-bold opacity-60">Instant Scan & Pay</span>
-                    </MethodButton>
-
-                    <MethodButton active={paymentMethod === 'sctcard'} onClick={() => setPaymentMethod('sctcard')} color="blue">
-                      <CreditCard size={26} strokeWidth={2.5} />
-                      <span className="text-[13px] font-black uppercase tracking-tight">SCT / UnionPay</span>
-                      <span className="text-[10px] font-bold opacity-60">Debit/Credit Card</span>
-                    </MethodButton>
-                  </div>
-
-                  <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] mb-4">Partner Gateways</p>
-                  <div className="grid grid-cols-3 gap-3 mb-8">
-                    <MethodButton active={paymentMethod === 'esewa'} onClick={() => setPaymentMethod('esewa')} color="green" compact>
-                      <span className="font-black text-sm">eSewa</span>
-                    </MethodButton>
-                    <MethodButton active={paymentMethod === 'khalti'} onClick={() => setPaymentMethod('khalti')} color="purple" compact>
-                      <span className="font-black text-sm">Khalti</span>
-                    </MethodButton>
-                    <MethodButton active={paymentMethod === 'bank'} onClick={() => setPaymentMethod('bank')} color="navy" compact>
-                      <Building size={20} />
-                      <span className="font-black text-[10px] uppercase">Net Banking</span>
-                    </MethodButton>
-                  </div>
-
-                  {/* CONTENT AREA */}
-                  <div className={`min-h-75 bg-slate-50/50 rounded-2xl p-8 border border-slate-100 relative overflow-hidden`}>
-                    <AnimatePresence mode="wait">
-                      {paymentMethod === 'smartqr' && (
-                        <motion.div key="qr" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center">
-                          <div className="bg-white p-4 rounded-3xl shadow-sm mb-6 border border-slate-200">
-                            <QRCode value={`sct-smartlink-${data.invoiceNumber}`} size={180} />
-                          </div>
-                          <div className="flex flex-col items-center gap-3">
-                            <p className="text-[11px] text-slate-400 text-center max-w-[240px] leading-relaxed">
-                              Open <strong>Smart QR</strong> supported apps (nBank, eSewa, Khalti) to scan and pay.
-                            </p>
-                          </div>
-                        </motion.div>
-                      )}
-
-                      {paymentMethod === 'sctcard' && (
-                        <motion.div key="card" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-                          <div className="flex justify-between items-center mb-2">
-                             <span className={`text-xs font-bold text-[${SCT_NAVY}] uppercase tracking-wider`}>Card Details</span>
-                             <div className="flex gap-2 opacity-50"><CreditCard size={20} /></div>
-                          </div>
-                          <div className="space-y-4">
-                            <input placeholder="0000 0000 0000 0000" className="w-full px-5 py-4 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-[#0066B3]/20 focus:border-[#0066B3] transition-all font-mono text-base" />
-                            <div className="grid grid-cols-2 gap-4">
-                              <input placeholder="MM / YY" className="px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-[#0066B3] text-sm" />
-                              <input placeholder="CVV" className="px-5 py-4 rounded-xl border border-slate-200 outline-none focus:border-[#0066B3] text-sm" />
-                            </div>
-                          </div>
-                          <Button 
-                            disabled={status === 'processing'}
-                            className={`w-full bg-[${SCT_BLUE}] hover:bg-[#005596] text-white h-14 rounded-xl font-bold shadow-lg shadow-blue-100 mt-4 text-lg`}
-                          >
-                            {status === 'processing' ? <Loader2 className="animate-spin mr-2" /> : "Secure Pay"} {data.currency} {parseFloat(data.amount).toLocaleString()}
-                          </Button>
-                        </motion.div>
-                      )}
-
-                      {(paymentMethod === 'esewa' || paymentMethod === 'khalti' || paymentMethod === 'bank') && (
-                        <motion.div key="ext" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center py-12">
-                           <div className={`w-16 h-16 bg-[${SCT_LIGHT}] text-[${SCT_BLUE}] rounded-2xl flex items-center justify-center mb-6`}>
-                              <Zap size={32} />
-                           </div>
-                           <p className="text-sm text-slate-500 mb-8 text-center max-w-70">
-                             You will be redirected to the secure <strong>{paymentMethod.toUpperCase()}</strong> gateway to complete your transaction.
-                           </p>
-                           <Button 
-                            disabled={status === 'processing'}
-                            className={`w-full bg-[${SCT_NAVY}] text-white h-14 rounded-xl font-bold text-lg`}
-                           >
-                             {status === 'processing' ? <Loader2 className="animate-spin mr-2" /> : `Continue to ${paymentMethod}`}
-                           </Button>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* === ORDER SUMMARY (RIGHT) === */}
-            <div className="w-full lg:w-5/12 order-1 lg:order-2 lg:sticky lg:top-24">
-              <div className="bg-white rounded-4xl p-8 border border-slate-100 shadow-xl shadow-slate-200/40">
-                <div className="flex items-center gap-3 mb-8">
-                  <div className={`w-12 h-12 bg-[${SCT_LIGHT}] rounded-2xl flex items-center justify-center text-[${SCT_BLUE}]`}>
-                     <User size={24} />
-                  </div>
-                  <div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.15em]">Customer</p>
-                    <p className={`font-black text-[${SCT_NAVY}]`}>{data.customerName}</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-slate-500">Invoice Number</span>
-                    <span className="text-sm font-bold font-mono bg-slate-50 px-2 py-1 rounded border border-slate-100">{data.invoiceNumber}</span>
-                  </div>
-                  <div className="flex justify-between items-start">
-                    <span className="text-sm text-slate-500">Description</span>
-                    <span className="text-sm font-bold text-right max-w-45 leading-tight text-slate-700">{data.description}</span>
-                  </div>
-                </div>
-
-                <div className={`p-8 bg-[${SCT_LIGHT}]/50 rounded-4xl border border-[${SCT_BLUE}]/10`}>
-                  <div className="flex justify-between text-sm text-slate-600 mb-2 font-medium">
-                    <span>Subtotal</span>
-                    <span>{data.currency} {data.subtotal}</span>
-                  </div>
-                  <div className="flex justify-between text-sm text-slate-600 mb-4 font-medium">
-                    <span>Tax Amount (VAT)</span>
-                    <span>{data.currency} {data.taxAmount}</span>
-                  </div>
-                  <div className={`h-px bg-[${SCT_BLUE}]/10 mb-4`} />
-                  <div className="flex justify-between items-center">
-                    <span className={`font-black text-[${SCT_NAVY}] uppercase text-xs`}>Total Amount</span>
-                    <span className={`text-3xl font-black text-[${SCT_BLUE}]`}>{data.currency} {parseFloat(data.amount).toLocaleString()}</span>
-                  </div>
-                </div>
-
-                <div className="mt-8 flex items-center gap-3 px-4 py-3 bg-slate-50 rounded-xl">
-                  <Lock size={16} className="text-green-600" />
-                  <p className="text-[10px] leading-relaxed text-slate-500 font-medium">
-                    Your payment information is encrypted and processed via the <strong>Smart Link</strong>. 
-                  </p>
-                </div>
-              </div>
+        {/* RIGHT SIDE: Payment Actions */}
+        <div className="flex-1 flex flex-col bg-white relative">
+          
+          {/* Header Area */}
+          <div className="px-8 py-5 border-b border-slate-50 flex justify-between items-center sticky top-0 bg-white z-10">
+            {method ? (
+              <button onClick={() => setMethod(null)} className="flex items-center gap-1 text-[#0066B3] font-bold text-sm hover:text-blue-700 transition-colors">
+                <ChevronLeft size={18} /> All payment methods
+              </button>
+            ) : (
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Select Payment Method</span>
+            )}
+            <div className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded">
+              {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
             </div>
           </div>
-        )}
+
+          {/* Interaction Area */}
+          <div className="flex-1 p-8 overflow-y-auto">
+            <AnimatePresence mode="wait">
+              {!method ? (
+                <motion.div key="list" initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 10 }} className="space-y-2">
+                  <MethodRow 
+                    icon={<QrCode size={18} />} 
+                    title="Smart QR" 
+                    subtitle="Scan with SmartQR, Fonepay, or Mobile Banking" 
+                    onClick={() => setMethod('smartqr')} 
+                  />
+                  <MethodRow 
+                    icon={<CreditCard size={18} />} 
+                    title="Card" 
+                    subtitle="Visa, Mastercard, SCT, UnionPay" 
+                    onClick={() => setMethod('sctcard')} 
+                  />
+                  <MethodRow 
+                    icon={<Wallet size={18} className="text-green-600" />} 
+                    title="eSewa" 
+                    subtitle="Pay with eSewa Mobile Wallet" 
+                    onClick={() => setMethod('esewa')} 
+                  />
+                  <MethodRow 
+                    icon={<Wallet size={18} className="text-purple-600" />} 
+                    title="Khalti" 
+                    subtitle="Pay with Khalti Digital Wallet" 
+                    onClick={() => setMethod('khalti')} 
+                  />
+                  <MethodRow 
+                    icon={<Building size={18} />} 
+                    title="Netbanking" 
+                    subtitle="Login to your bank account" 
+                    onClick={() => setMethod('bank')} 
+                  />
+                </motion.div>
+              ) : (
+                <motion.div key="detail" initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }}>
+                  {method === 'smartqr' && <QRSection id={id} />}
+                  {/* Pass the full data object to CardSection */}
+                  {method === 'sctcard' && <CardSection data={data} />}
+                  {(method === 'esewa' || method === 'khalti' || method === 'bank') && <RedirectSection method={method} />}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Trusted Footer */}
+          <div className="p-6 bg-slate-50/50 border-t border-slate-50">
+            <div className="flex items-center justify-center gap-4 opacity-40 grayscale contrast-200 mb-3">
+              <span className="text-[9px] font-black italic tracking-widest uppercase">PCI-DSS Compliant</span>
+              <span className="text-[9px] font-black italic tracking-widest uppercase">SSL Secured</span>
+            </div>
+            <div className="flex items-center justify-center gap-1 text-[#0066B3]">
+              <ShieldCheck size={14} className="text-green-500" fill="currentColor" />
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] opacity-80">Secured by Smart Link</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// --- REUSABLE BUTTON COMPONENT ---
-function MethodButton({ active, onClick, children, color, compact }: any) {
-  
-  // Theme configuration for borders, backgrounds, AND text colors
-  const themes = {
-    blue: {
-      container: active ? "border-[#0066B3] bg-[#0066B3] shadow-xl shadow-blue-200/50" : "border-slate-100 bg-white hover:border-blue-200 hover:bg-blue-50/30",
-      text: active ? "text-white" : "text-[#0066B3]" 
-    },
-    green: {
-      container: active ? "border-[#41A124] bg-[#41A124] shadow-xl shadow-green-100" : "border-slate-100 bg-white hover:border-green-200 hover:bg-green-50/30",
-      text: active ? "text-white" : "text-[#41A124]"
-    },
-    purple: {
-      container: active ? "border-[#5C2D91] bg-[#5C2D91] shadow-xl shadow-purple-100" : "border-slate-100 bg-white hover:border-purple-200 hover:bg-purple-50/30",
-      text: active ? "text-white" : "text-[#5C2D91]"
-    },
-    navy: {
-      container: active ? "border-[#003A66] bg-[#003A66] shadow-xl shadow-slate-200" : "border-slate-100 bg-white hover:border-slate-300 hover:bg-slate-100/50",
-      text: active ? "text-white" : "text-[#003A66]"
-    },
-  };
+// --- Sub Components (Razorpay Style) ---
 
-  const currentTheme = themes[color as keyof typeof themes];
+function MethodRow({ icon, title, subtitle, onClick }: any) {
+  return (
+    <button 
+      onClick={onClick}
+      className="w-full flex items-center justify-between p-4 rounded-xl border border-transparent hover:border-slate-100 hover:bg-slate-50/80 transition-all group"
+    >
+      <div className="flex items-center gap-4">
+        <div className="w-8 h-8 flex items-center justify-center text-slate-400 group-hover:text-[#0066B3] transition-colors bg-white border border-slate-100 rounded-lg shadow-sm">
+          {icon}
+        </div>
+        <div className="text-left">
+          <p className="text-[13px] font-bold text-slate-700">{title}</p>
+          <p className="text-[11px] text-slate-400 font-medium">{subtitle}</p>
+        </div>
+      </div>
+      <ChevronRight size={16} className="text-slate-200 group-hover:text-slate-400" />
+    </button>
+  );
+}
+
+function CardSection({ data }: { data: any }) {
+  return (
+    <div className="space-y-5 max-w-sm mx-auto pt-2">
+      
+      {/* --- NEW SUMMARY CARD --- */}
+      <div className="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-3">
+        <div className="flex justify-between items-start">
+          <div className="flex gap-2">
+             <div className="mt-0.5"><User size={14} className="text-slate-400" /></div>
+             <div>
+               <p className="text-[10px] font-bold text-slate-400 uppercase">Billed To</p>
+               <p className="text-xs font-bold text-slate-700">{data.customerName}</p>
+             </div>
+          </div>
+          <div className="text-right">
+             <p className="text-[10px] font-bold text-slate-400 uppercase">Invoice</p>
+             <p className="text-xs font-mono font-bold text-slate-600">{data.invoiceNumber}</p>
+          </div>
+        </div>
+        <div className="pt-2 border-t border-slate-200/60">
+           <div className="flex gap-2">
+             <div className="mt-0.5"><FileText size={14} className="text-slate-400" /></div>
+             <div>
+                <p className="text-[10px] font-bold text-slate-400 uppercase">Description</p>
+                <p className="text-xs font-medium text-slate-600 leading-tight">{data.description}</p>
+             </div>
+           </div>
+        </div>
+      </div>
+      {/* ------------------------- */}
+
+      <div className="space-y-4">
+        <div className="relative">
+          <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Card Number</label>
+          <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none transition-all font-mono" placeholder="0000 0000 0000 0000" />
+          <CreditCard className="absolute right-3 top-[34px] text-slate-300" size={18} />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Expiry</label>
+            <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none font-mono" placeholder="MM / YY" />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">CVV</label>
+            <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none font-mono" placeholder="123" />
+          </div>
+        </div>
+        <div>
+           <label className="text-[10px] font-bold text-slate-400 uppercase mb-1 block ml-1">Card Holder Name</label>
+           <input className="w-full px-4 py-3 bg-white border border-slate-200 rounded-lg text-sm focus:border-[#0066B3] outline-none" placeholder={data.customerName} />
+        </div>
+      </div>
+      <button className="w-full bg-[#0066B3] text-white py-4 rounded-lg font-bold text-sm shadow-lg shadow-blue-600/10 hover:brightness-110 active:scale-[0.98] transition-all uppercase tracking-wider">
+        Pay {data.currency} {data.amount}
+      </button>
+    </div>
+  );
+}
+
+function QRSection({ id }: { id: string }) {
+  return (
+    <div className="flex flex-col items-center py-4">
+      <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm mb-6">
+        <QRCode value={`sct-${id}`} size={180} />
+      </div>
+      <div className="text-center space-y-2 max-w-[280px]">
+        <div className="flex items-center justify-center gap-2 text-[#0066B3] font-bold text-sm">
+           <Zap size={16} fill="currentColor" />
+           <span>Smart QR</span>
+        </div>
+        <p className="text-[11px] text-slate-400 font-medium leading-relaxed">
+          Open <strong>Fonepay, nBank, or SmartQR</strong> supported apps to scan this code instantly.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function RedirectSection({ method }: { method: string }) {
+  const isKhalti = method === 'khalti';
+  const isEsewa = method === 'esewa';
+  const themeColor = isKhalti ? "bg-purple-600" : isEsewa ? "bg-green-600" : "bg-slate-900";
+  const logoInitial = method!.charAt(0).toUpperCase();
 
   return (
-    <button
-      onClick={onClick}
-      className={`relative flex flex-col items-center justify-center gap-1 rounded-2xl border-2 transition-all duration-300 
-        ${compact ? 'h-24' : 'h-32'} 
-        ${currentTheme.container} 
-        ${currentTheme.text}`} // This applies the text color to all children automatically
-    >
-      {children}
-      {active && (
-        <motion.div layoutId="check" className="absolute -top-2 -right-2 bg-white rounded-full shadow-lg p-0.5">
-          <CheckCircle2 
-            size={22} 
-            className={
-               color === 'blue' ? 'text-[#0066B3]' : 
-               color === 'green' ? 'text-[#41A124]' : 
-               color === 'purple' ? 'text-[#5C2D91]' : 'text-[#003A66]'
-            } 
-            fill="white" 
-          />
-        </motion.div>
-      )}
-    </button>
+    <div className="text-center py-10">
+      <div className={`w-16 h-16 ${isKhalti ? 'bg-purple-50 text-purple-600' : isEsewa ? 'bg-green-50 text-green-600' : 'bg-blue-50 text-blue-600'} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
+        {method === 'bank' ? <Building size={32} /> : <span className="text-2xl font-black">{logoInitial}</span>}
+      </div>
+      <p className="text-sm text-slate-600 mb-8 px-6 font-medium leading-relaxed">
+        We will redirect you to <strong>{method!.charAt(0).toUpperCase() + method!.slice(1)}</strong> secure login to complete the payment.
+      </p>
+      <button className={`w-full max-w-xs ${themeColor} text-white py-4 rounded-lg font-bold text-sm hover:opacity-90 transition-all shadow-lg`}>
+        Continue to {method!.charAt(0).toUpperCase() + method!.slice(1)}
+      </button>
+    </div>
   );
 }

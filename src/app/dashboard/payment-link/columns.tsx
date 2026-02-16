@@ -1,8 +1,11 @@
+"use client"
+
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, CreditCard, Calendar, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, CreditCard, Calendar, MoreHorizontal,Copy,Check } from "lucide-react";
 import { Payment } from "./types";
 import StatusBadge from "./components/StatusBadge";
 import { Button } from "@/components /ui/Button";
+import { useState } from "react";
 
 export const getColumns = (): ColumnDef<Payment>[] => [
   {
@@ -86,7 +89,7 @@ export const getColumns = (): ColumnDef<Payment>[] => [
       const amount = parseFloat(row.getValue("amount"));
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "USD",
+        currency: "NPR",
       }).format(amount);
 
       return (
@@ -96,14 +99,41 @@ export const getColumns = (): ColumnDef<Payment>[] => [
       );
     },
   },
-  {
-    id: "actions",
-    cell: () => (
-      <div className="text-right">
+ {
+  id: "actions",
+  cell: ({ row }) => {
+    const status = row.getValue("status");
+    const paymentUrl = `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/pay/v1/79a0c671-54b0-4ae2-9ada-757e65fafa4e`;
+
+
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+      navigator.clipboard.writeText(paymentUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // revert after 2s
+    };
+
+    return (
+      <div className="flex justify-end gap-2 items-center">
+        {status === "Active" && (
+          <button
+            onClick={handleCopy}
+            className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-600 transition-colors relative"
+          >
+            {copied ? (
+              <Check className="h-3 w-3 text-green-500" />
+            ) : (
+              <Copy className="h-3 w-3" />
+            )}
+          </button>
+        )}
         <button className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-900 transition-colors">
           <MoreHorizontal className="w-4 h-4" />
         </button>
       </div>
-    ),
+    );
   },
+},
+
 ];
