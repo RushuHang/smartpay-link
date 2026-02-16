@@ -9,19 +9,20 @@ export default function LoginPage() {
       
       {/* --------------------------------------------------
         LEFT SECTION: Immersive Brand Experience
+        - Added 'hidden lg:flex' to hide on mobile and restore on desktop.
         --------------------------------------------------
       */}
-      <div className="relative w-full lg:w-[55%] flex flex-col justify-between p-8 lg:p-16 bg-gradient-to-br from-brand-navy to-brand-primary text-white overflow-hidden min-h-[500px] lg:min-h-screen">
+      <div className="hidden lg:flex relative w-full lg:w-[55%] flex-col justify-between p-8 lg:p-16 bg-linear-to-br from-brand-navy to-brand-primary text-white overflow-hidden min-h-125 lg:min-h-screen">
         
         {/* Modern Background Texture (Grid & Blurs) */}
         <div className="absolute inset-0 z-0">
             {/* Subtle Grid Pattern */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-soft-light"></div>
-            <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-size-[40px_40px]"></div>
             
             {/* Ambient Glows */}
-            <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-brand-primary blur-[120px] opacity-40 mix-blend-screen" />
-            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-indigo-500 blur-[120px] opacity-30 mix-blend-screen" />
+            <div className="absolute -top-40 -left-40 w-150 h-150 rounded-full bg-brand-primary blur-[120px] opacity-40 mix-blend-screen" />
+            <div className="absolute bottom-0 right-0 w-125 h-125 rounded-full bg-indigo-500 blur-[120px] opacity-30 mix-blend-screen" />
         </div>
 
         {/* Brand Logo */}
@@ -35,7 +36,7 @@ export default function LoginPage() {
         {/* Center Content: Hero Text & Floating Visuals */}
         <div className="relative z-10 flex flex-col justify-center h-full mt-12 mb-12 lg:mt-0 lg:mb-0">
           <div className="max-w-xl">
-            <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-blue-200">
+            <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6 tracking-tight text-transparent bg-clip-text bg-linear-to-r from-white via-blue-100 to-blue-200">
               Banking built for <br />
               <span className="text-white">tomorrow.</span>
             </h1>
@@ -66,10 +67,9 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Visual Element: Floating Glass Card (Abstract Representation) */}
-        {/* Hidden on mobile/tablet (hidden), visible on large screens (xl:block) to prevent overlap */}
+        {/* Visual Element: Floating Glass Card */}
         <div className="absolute top-1/2 -right-24 lg:-right-32 transform -translate-y-1/2 hidden xl:block">
-            <div className="relative w-80 h-48 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl p-6 flex flex-col justify-between rotate-[-12deg] group hover:rotate-0 transition-transform duration-500">
+            <div className="relative w-80 h-48 bg-white/5 backdrop-blur-xl rounded-2xl border border-white/20 shadow-2xl p-6 flex flex-col justify-between -rotate-12 group hover:rotate-0 transition-transform duration-500">
                 <div className="flex justify-between items-start">
                     <CreditCard className="text-white/80" />
                     <ShieldCheck className="text-emerald-400" size={20} />
@@ -85,7 +85,6 @@ export default function LoginPage() {
                 </div>
             </div>
             
-            {/* Secondary Floating Element */}
             <div className="absolute -bottom-10 -left-10 w-40 p-4 bg-brand-navy/80 backdrop-blur-lg rounded-xl border border-white/10 shadow-xl">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="p-1.5 bg-green-500/20 rounded-lg">
@@ -108,13 +107,16 @@ export default function LoginPage() {
         RIGHT SECTION: Login Form
         --------------------------------------------------
       */}
-      <div className="w-full lg:w-[45%] flex flex-col relative bg-white">
+      <div className="w-full lg:w-[45%] flex flex-col relative bg-white min-h-screen lg:min-h-0">
         
-        {/* Mobile Header (Hidden on Desktop) */}
-        <div className="lg:hidden p-6 pb-0">
-             <div className="flex items-center gap-2 text-brand-navy">
-                <ShieldCheck className="w-6 h-6" />
-                <span className="font-bold text-lg">Smart Link</span>
+        {/* Mobile Header (Visible below lg) */}
+        <div className="lg:hidden p-8 pb-0">
+             <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2 text-brand-navy">
+                    <ShieldCheck className="w-7 h-7" />
+                    <span className="font-bold text-xl tracking-tight">Smart Link</span>
+                </div>
+                <p className="text-sm text-slate-500 font-medium">Secure Banking Portal</p>
              </div>
         </div>
 
@@ -133,6 +135,11 @@ export default function LoginPage() {
                     <div className="relative flex justify-center text-sm">
                         <span className="px-2 bg-white text-slate-400">Secure connection</span>
                     </div>
+                </div>
+
+                {/* Mobile-only footer links to keep layout consistent with Desktop policy */}
+                <div className="lg:hidden text-center text-xs text-slate-400">
+                    <span>© {new Date().getFullYear()} Smart Link Technologies.</span>
                 </div>
             </div>
         </div>

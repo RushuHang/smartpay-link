@@ -82,7 +82,7 @@ const DashboardCard = ({
   extra?: React.ReactNode;
 }) => (
   <Card
-    bordered={false}
+     variant="borderless"
     title={
       title ? (
         <span style={{ color: colors.navy, fontWeight: 600 }}>{title}</span>
@@ -117,10 +117,13 @@ const StatCard = ({ title, value, prefix, icon }: any) => (
           <Statistic
             value={value}
             prefix={prefix}
-            valueStyle={{
-              color: colors.navy,
+            styles={{
+              content:{
+                color: colors.navy,
               fontWeight: 700,
               fontSize: "28px",
+              }
+              
             }}
           />
         </div>
@@ -213,7 +216,7 @@ export default function MerchantDashboard() {
           </Col>
           <Col xs={24} sm={12} lg={6}>
             <Card
-              bordered={false}
+               variant="borderless"
               style={{
                 backgroundColor: colors.navy,
                 borderRadius: "12px",
@@ -227,7 +230,7 @@ export default function MerchantDashboard() {
                 }
                 value={85}
                 suffix="/ 100 Links"
-                valueStyle={{ color: colors.white }}
+                styles={{ content:{color: colors.white } }}
               />
               <div style={{ marginTop: "12px" }}>
                 <Text style={{ color: colors.lightBlue }}>Pro Plan Active</Text>
@@ -372,7 +375,7 @@ export default function MerchantDashboard() {
           <Col xs={24} lg={6}>
             <DashboardCard title="Top Performing Links">
               <Space
-                direction="vertical"
+                orientation="vertical"
                 style={{ width: "100%" }}
                 size="middle"
               >

@@ -29,20 +29,30 @@ export default function LoginForm() {
     resolver: zodResolver(formSchema),
     defaultValues: { rememberMe: false },
   });
+const onSubmit = async (data: FormData) => {
+  setIsLoading(true);
 
-  const onSubmit = async (data: FormData) => {
-    setIsLoading(true);
-    const submitData = { ...data, rememberMe: data.rememberMe ?? false };
-    console.log("Login Data:", submitData);
+  // Normalize email & password
+  const email = data.email.trim().toLowerCase();
+  const password = data.password.trim();
+  const submitData = { ...data, email, password, rememberMe: data.rememberMe ?? false };
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+  console.log("Login Data:", submitData);
 
-    setIsLoading(false);
+  // Simulate API call
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // ✅ Navigate to dashboard after successful login
-    router.push("/dashboard");
-  };
+  setIsLoading(false);
+
+  // Conditional navigation
+  if (email === "admin@gmail.com" && password === "test12345") {
+    router.push("/admin/dashboard"); // Admin route
+  } else {
+    router.push("/dashboard"); // Regular user route
+  }
+};
+
+
 
   return (
     <div className="w-full flex items-center justify-center p-4 lg:p-0">
