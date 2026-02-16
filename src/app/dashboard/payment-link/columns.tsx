@@ -103,7 +103,8 @@ export const getColumns = (): ColumnDef<Payment>[] => [
   id: "actions",
   cell: ({ row }) => {
     const status = row.getValue("status");
-    const paymentUrl = `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/pay/v1/79a0c671-54b0-4ae2-9ada-757e65fafa4e`;
+    const paymentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/pay/v1/79a0c671-54b0-4ae2-9ada-757e65fafa4e`;
+
 
 
     const [copied, setCopied] = useState(false);
