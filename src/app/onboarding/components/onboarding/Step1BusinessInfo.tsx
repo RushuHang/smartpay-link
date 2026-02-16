@@ -1,6 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { businessInfoSchema, BusinessInfoFormData } from "@/lib/schemas/onboarding";
 import { useOnboarding } from "@/context/OnboardingContext";
@@ -262,7 +263,7 @@ export function Step1BusinessInfo() {
                         {...field}
                         rows={4}
                         placeholder="Briefly describe the nature of your business and primary source of funds..."
-                        className={`${inputBaseClass} pl-10 py-2.5 resize-none min-h-[100px] leading-relaxed`}
+                        className={`${inputBaseClass} pl-10 py-2.5 resize-none min-h-25 leading-relaxed`}
                       />
                     </FormControl>
                   </div>
@@ -277,14 +278,20 @@ export function Step1BusinessInfo() {
           </div>
 
           {/* Footer Actions */}
-          <div className="pt-6 flex justify-end items-center gap-4">
-             <Button 
+          <div className="pt-6 flex justify-between items-center gap-4">
+            <Link href="/dashboard">
+              <Button>
+              Dashboard
+            </Button>
+            </Link>
+            
+             {/* <Button 
                type="button" 
                variant="ghost" 
                className="text-slate-600 hover:text-slate-900 hover:bg-slate-100"
              >
                Save as Draft
-             </Button>
+             </Button> */}
             <Button 
               type="submit" 
               // className="px-6 py-2.5 h-10 rounded-lg text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all focus:ring-2 focus:ring-slate-900/20 focus:ring-offset-2 flex items-center gap-2"

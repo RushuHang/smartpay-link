@@ -17,7 +17,6 @@ function OnboardingContent() {
       <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 sm:p-10">
         {currentStep === 1 && <Step1BusinessInfo />}
         {currentStep === 2 && <Step2Address />}
-        {/* {currentStep === 3 && <Step3Transaction />} */}
         {currentStep === 3 && <Step4KYC />}
         {currentStep === 4 && <Step5Owners />}
         {currentStep === 5 && <Step6BankAccount />}

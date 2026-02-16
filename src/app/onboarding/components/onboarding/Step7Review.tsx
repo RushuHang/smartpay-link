@@ -94,7 +94,7 @@ export function Step7Review() {
         </div>
 
        <Link href="/dashboard" passHref className="w-full">
-         <Button className="w-full py-2.5 h-11 rounded-lg text-sm font-semibold bg-slate-900 hover:bg-slate-800 text-white shadow-sm transition-all">
+         <Button className="w-full py-2.5 h-11 rounded-lg text-sm font-semibold text-white shadow-sm transition-all">
            Go to Dashboard
          </Button>
        </Link>
