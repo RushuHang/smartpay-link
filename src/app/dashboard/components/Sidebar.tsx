@@ -11,19 +11,34 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function Sidebar() {
+interface SidebarProps {
+  isOpen: boolean;
+  close: () => void;
+}
+
+export default function Sidebar({ isOpen, close }: SidebarProps) {
   const router = useRouter();
   const pathname = usePathname();
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+    close(); // Close sidebar on navigation (mobile UX)
+  };
+
   return (
-    // Changed: Removed gradient, used solid bg-brand-primary
-    <aside className="hidden lg:flex w-72 bg-brand-navy text-white flex-col p-6 relative overflow-hidden">
+    <aside
+      className={`
+        fixed inset-y-0 left-0 z-50 w-72 bg-brand-navy text-white flex flex-col p-6 overflow-hidden transition-transform duration-300 ease-in-out
+        lg:static lg:translate-x-0 
+        ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+    >
       <div className="absolute top-0 left-0 w-full h-full bg-white/5 opacity-50 pointer-events-none" />
 
       {/* Clickable Logo */}
       <div
         className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer"
-        onClick={() => router.push("/dashboard")}
+        onClick={() => handleNavigation("/dashboard")}
       >
         <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
           <ShieldCheck className="w-6 h-6 text-white" />
@@ -37,22 +52,19 @@ export default function Sidebar() {
           icon={<LayoutDashboard size={20} />}
           label="Dashboard"
           active={pathname === "/dashboard"}
-          onClick={() => router.push("/dashboard")}
+          onClick={() => handleNavigation("/dashboard")}
         />
         <SidebarItem
           icon={<LinkIcon size={20} />}
           label="Payment Link"
           active={pathname === "/dashboard/payment-link"}
-          onClick={() => router.push("/dashboard/payment-link")}
+          onClick={() => handleNavigation("/dashboard/payment-link")}
         />
       </nav>
 
       {/* Profile Widget */}
-      {/* Changed: Removed gradient from widget background */}
-     {/* Profile Widget */}
-      {/* Changed: Made entire widget clickable, added scale/color hover effects */}
       <div
-        onClick={() => router.push("/onboarding")}
+        onClick={() => handleNavigation("/onboarding")}
         className="mt-auto relative z-10 p-4 bg-white/10 rounded-2xl border border-white/10 backdrop-blur-xl shadow-lg shadow-black/20 
                    cursor-pointer transition-all duration-300 ease-out group
                    hover:bg-white/20 hover:border-white/25 hover:shadow-xl hover:shadow-black/30 hover:scale-[1.02]"
@@ -83,7 +95,6 @@ export default function Sidebar() {
           </div>
 
           <div className="w-full h-1.5 bg-black/20 rounded-full overflow-hidden">
-            {/* Animation: Expands and glows brighter when the parent widget is hovered */}
             <div className="h-full w-[40%] bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.3)] transition-all duration-500 ease-out group-hover:w-[45%] group-hover:shadow-[0_0_12px_rgba(255,255,255,0.8)]"></div>
           </div>
 
