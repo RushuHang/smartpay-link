@@ -25,13 +25,13 @@ export default function FilterBar({
   const hasFilters = columnFiltersLength > 0 || !!globalFilter;
 
   return (
-    <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-3 py-2 flex flex-col sm:flex-row sm:items-center gap-3">
-      {/* 🔎 Search Input */}
-      <div className="relative flex-1">
+    <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-3 py-3 md:py-2 flex flex-col sm:flex-row sm:items-center gap-3">
+      {/* 🔎 Search Input - Full width on mobile */}
+      <div className="relative w-full sm:flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 h-4 w-4" />
 
         <input
-          placeholder="Search transactions, names, or emails..."
+          placeholder="Search transactions..."
           value={globalFilter}
           onChange={(e) => setGlobalFilter(e.target.value)}
           className="w-full pl-10 pr-10 py-2 text-sm bg-slate-50 border border-transparent rounded-lg 
@@ -49,14 +49,13 @@ export default function FilterBar({
         )}
       </div>
 
-      {/* 🔘 Actions */}
-      <div className="flex items-center gap-2">
-        {/* Filters Toggle */}
+      {/* 🔘 Actions - Row on mobile, auto width */}
+      <div className="flex items-center gap-2 w-full sm:w-auto">
         <Button
           type="button"
           onClick={() => setShowFilters((prev) => !prev)}
           className={cn(
-            "px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
+            "flex-1 sm:flex-none justify-center px-3 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2",
             showFilters
               ? "bg-brand-primary text-white shadow-sm"
               : "bg-brand-light text-brand-primary hover:bg-brand-light/20",
@@ -71,12 +70,11 @@ export default function FilterBar({
           )}
         </Button>
 
-        {/* Reset Button */}
         {hasFilters && (
           <button
             type="button"
             onClick={reset}
-            className="px-3 py-2 text-sm font-medium text-rose-600 rounded-lg hover:bg-rose-50 transition flex items-center gap-2"
+            className="flex-1 sm:flex-none justify-center px-3 py-2 text-sm font-medium text-rose-600 rounded-lg hover:bg-rose-50 transition flex items-center gap-2"
           >
             <X className="w-4 h-4" />
             Reset

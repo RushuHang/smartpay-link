@@ -22,12 +22,11 @@ import PaginationFooter from "./components/PaginationFooter";
 import PaymentDrawer from "./components/PaymentDrawer";
 
 import { Plus, Download } from "lucide-react";
-import { Button } from "@/components /ui/Button"; // ✅ fixed path
+import { Button } from "@/components /ui/Button";
 
 export default function PaymentLinksTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] =
-    useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState("");
   const [showFilters, setShowFilters] = useState(false);
@@ -53,13 +52,14 @@ export default function PaymentLinksTable() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50/50 p-6 lg:p-12 font-sans text-slate-900">
-      <div className="max-w-7xl mx-auto space-y-6">
-
-        {/* 🔹 Header Section */}
+    // Responsive padding: p-4 for mobile, lg:p-12 for desktop
+    <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 lg:p-12 font-sans text-slate-900">
+      <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
+        
+        {/* 🔹 Header Section: Stacks vertically on mobile */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900">
               Payment Requests
             </h1>
             <p className="text-slate-500 text-sm">
@@ -67,20 +67,22 @@ export default function PaymentLinksTable() {
             </p>
           </div>
 
-          <div className="flex gap-3">
-            <button className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2">
+          <div className="flex w-full md:w-auto gap-3">
+            <button className="flex-1 md:flex-none justify-center px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all shadow-sm flex items-center gap-2">
               <Download className="w-4 h-4" />
-              Export
+              <span className="hidden sm:inline">Export</span>
             </button>
 
-            {/* ✅ Replaced with custom Button */}
-            <Button
-              type="button"
-              onClick={() => setIsDrawerOpen(true)}
-            >
-              <Plus className="w-4 h-4" />
-              New Request
-            </Button>
+            <div className="flex-1 md:flex-none">
+              <Button
+                type="button"
+                className="w-full justify-center"
+                onClick={() => setIsDrawerOpen(true)}
+              >
+                <Plus className="w-4 h-4" />
+                <span className="ml-2">New Request</span>
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -110,7 +112,6 @@ export default function PaymentLinksTable() {
 
         {/* 🔹 Table Container */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-
           <BulkActionsBar
             selectedCount={Object.keys(rowSelection).length}
             clearSelection={() => setRowSelection({})}
@@ -125,10 +126,7 @@ export default function PaymentLinksTable() {
             }}
           />
 
-          <PaginationFooter
-            table={table}
-            totalCount={fakeData.length}
-          />
+          <PaginationFooter table={table} totalCount={fakeData.length} />
         </div>
 
         {/* 🔹 Drawer */}

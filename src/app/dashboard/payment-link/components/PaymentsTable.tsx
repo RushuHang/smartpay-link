@@ -16,15 +16,16 @@ export default function PaymentsTable({
   resetFilters,
 }: Props) {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm text-left">
+    // Container handles horizontal scroll
+    <div className="w-full overflow-x-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
+      <table className="w-full text-sm text-left min-w-[600px] md:min-w-full">
         <thead className="bg-slate-50 border-b border-slate-200">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap"
+                  className="px-4 py-3 md:px-6 md:py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap"
                 >
                   {header.isPlaceholder
                     ? null
@@ -52,7 +53,7 @@ export default function PaymentsTable({
                 )}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-6 py-4">
+                  <td key={cell.id} className="px-4 py-3 md:px-6 md:py-4 whitespace-nowrap">
                     {flexRender(
                       cell.column.columnDef.cell,
                       cell.getContext()

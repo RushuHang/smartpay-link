@@ -9,8 +9,8 @@ interface Props {
 
 export default function PaginationFooter({ table, totalCount }: Props) {
   return (
-    <div className="flex items-center justify-between px-6 py-4 border-t border-slate-200 bg-slate-50/30">
-      <div className="text-sm text-slate-500">
+    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 px-4 md:px-6 py-4 border-t border-slate-200 bg-slate-50/30">
+      <div className="text-sm text-slate-500 text-center sm:text-left">
         Showing{" "}
         <span className="font-medium text-slate-900">
           {table.getRowModel().rows.length}

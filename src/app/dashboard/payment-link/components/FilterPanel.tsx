@@ -29,13 +29,12 @@ export default function FilterPanel({ show, table, onClose, reset }: Props) {
           transition={{ duration: 0.2 }}
           className="overflow-hidden"
         >
-          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 space-y-6">
+          <div className="bg-white border border-slate-200 rounded-xl shadow-sm p-4 md:p-6 space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
               <h3 className="text-sm font-semibold text-slate-900">
                 Advanced Filters
               </h3>
-
               <button
                 onClick={onClose}
                 className="p-2 rounded-lg hover:bg-slate-100 transition"
@@ -44,14 +43,13 @@ export default function FilterPanel({ show, table, onClose, reset }: Props) {
               </button>
             </div>
 
-            {/* Filters Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Filters Grid: 1 col mobile, 2 cols desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               {/* Status Filter */}
               <div className="space-y-2">
                 <label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
                   Status
                 </label>
-
                 <select
                   value={
                     (table.getColumn("status")?.getFilterValue() as string) ??
@@ -76,7 +74,6 @@ export default function FilterPanel({ show, table, onClose, reset }: Props) {
                 <label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
                   Date
                 </label>
-
                 <input
                   type="date"
                   value={
@@ -93,15 +90,17 @@ export default function FilterPanel({ show, table, onClose, reset }: Props) {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
+            <div className="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-4 border-t border-slate-100">
               <button
                 onClick={handleReset}
-                className="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition"
+                className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 transition text-center"
               >
                 Reset Filters
               </button>
 
-              <Button onClick={onClose}>Apply</Button>
+              <div className="w-full sm:w-auto">
+                <Button onClick={onClose} className="w-full sm:w-auto justify-center">Apply</Button>
+              </div>
             </div>
           </div>
         </motion.div>
