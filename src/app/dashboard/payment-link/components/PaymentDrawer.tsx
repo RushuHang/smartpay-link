@@ -13,18 +13,45 @@ interface Props {
   onClose: () => void;
 }
 
+// 🔹 Kept your original Schema with all validations
 const paymentLinkSchema = z
   .object({
-    amount: z.string().min(1, "Amount is required"),
+    amount: z
+      .string()
+      .min(1, "Amount is required")
+      .refine((val) => Number(val) > 0, "Amount must be greater than 0"),
     currency: z.string().min(1, "Currency is required"),
     description: z.string().optional(),
     expiryAt: z.string().min(1, "Expiry date is required"),
     customerName: z.string().min(1, "Customer name is required"),
     customerEmail: z.string().optional(),
-    customerPhone: z.string().optional(),
+    customerPhone: z
+      .string()
+      .regex(/^\d{10}$/, "Phone number must be exactly 10 digits")
+      .optional()
+      .or(z.literal(""))
+      .optional(),
     allowPartialPayment: z.boolean().optional(),
     sendEmailNotification: z.boolean(),
     sendSMSNotification: z.boolean(),
+    successUrl: z.string().url("Enter valid URL").optional().or(z.literal("")),
+    webhookUrl: z.string().url("Enter valid URL").optional().or(z.literal("")),
+  })
+  .superRefine((data, ctx) => {
+    if (data.sendEmailNotification && !data.customerEmail) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Email is required if email notification is enabled",
+        path: ["customerEmail"],
+      });
+    }
+    if (data.sendSMSNotification && !data.customerPhone) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Phone number is required if SMS notification is enabled",
+        path: ["customerPhone"],
+      });
+    }
   });
 
 type FormValues = z.infer<typeof paymentLinkSchema>;
@@ -42,6 +69,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
     resolver: zodResolver(paymentLinkSchema),
     defaultValues: {
       currency: "NPR",
+      allowPartialPayment: false,
       sendEmailNotification: true,
       sendSMSNotification: false,
     },
@@ -50,10 +78,16 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
   const emailNotif = watch("sendEmailNotification");
   const smsNotif = watch("sendSMSNotification");
 
+  // 🔹 RESTORED: Your original logic to save and redirect
   const onSubmit = (data: FormValues) => {
-    // Submit logic
+    const id = crypto.randomUUID();
+
+    sessionStorage.setItem(`payment-link-${id}`, JSON.stringify(data));
+
     reset();
     onClose();
+
+    router.push(`/dashboard/payment-link/${id}`);
   };
 
   const inputBaseClass =
@@ -72,7 +106,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
             className="fixed inset-0 bg-brand-navy/20 backdrop-blur-sm z-40"
           />
 
-          {/* Drawer - w-full on mobile, max-w-xl on larger screens */}
+          {/* Drawer: Responsive width (w-full on mobile, max-w-xl on desktop) */}
           <motion.div
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
@@ -99,6 +133,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                 <div className="space-y-4 md:space-y-5">
                   <h3 className="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 md:mb-4">Transaction Details</h3>
 
+                  {/* Stack on mobile, 3 columns on desktop */}
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div className="md:col-span-2">
                       <label className="text-sm font-semibold text-brand-navy mb-1.5 block">Amount</label>
@@ -112,7 +147,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                           className={`${inputBaseClass} pl-10 py-3 font-medium`}
                         />
                       </div>
-                      {errors.amount && <p className="text-xs text-red-500 mt-1.5">{errors.amount.message}</p>}
+                      {errors.amount && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.amount.message}</p>}
                     </div>
 
                     <div>
@@ -131,6 +166,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                       <Calendar className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                       <input type="datetime-local" {...register("expiryAt")} className={`${inputBaseClass} pl-10 py-3 text-slate-600`} />
                     </div>
+                    {errors.expiryAt && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.expiryAt.message}</p>}
                   </div>
                 </div>
 
@@ -146,8 +182,10 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                       <User className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                       <input {...register("customerName")} placeholder="John Doe" className={`${inputBaseClass} pl-10 py-3`} />
                     </div>
+                    {errors.customerName && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.customerName.message}</p>}
                   </div>
 
+                  {/* Stack on mobile, 2 columns on desktop */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="text-sm font-semibold text-brand-navy mb-1.5 block">Email Address</label>
@@ -155,6 +193,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                         <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                         <input {...register("customerEmail")} placeholder="john@example.com" className={`${inputBaseClass} pl-10 py-3`} />
                       </div>
+                      {errors.customerEmail && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.customerEmail.message}</p>}
                     </div>
 
                     <div>
@@ -163,6 +202,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                         <Phone className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
                         <input {...register("customerPhone")} placeholder="+977 9800 000 000" className={`${inputBaseClass} pl-10 py-3`} />
                       </div>
+                      {errors.customerPhone && <p className="text-xs text-red-500 mt-1.5 font-medium">{errors.customerPhone.message}</p>}
                     </div>
                   </div>
                 </div>
@@ -209,7 +249,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                       <span className="text-sm font-medium text-brand-navy">Send Receipt via SMS</span>
                     </label>
                   </div>
-                  
+
                   <div className="mt-4">
                     <label className="text-sm font-semibold text-brand-navy mb-1.5 block">Description</label>
                     <textarea rows={3} {...register("description")} className={`${inputBaseClass} py-3 resize-none`} />
@@ -217,7 +257,7 @@ export default function PaymentDrawer({ isOpen, onClose }: Props) {
                 </div>
               </div>
 
-              {/* Footer */}
+              {/* Footer: Stack buttons on mobile, row on desktop */}
               <div className="px-4 py-4 md:px-8 md:py-5 bg-white border-t border-slate-100 flex flex-col-reverse sm:flex-row items-center justify-end gap-3 sm:gap-4">
                 <button type="button" onClick={onClose} className="w-full sm:w-auto px-5 py-2.5 text-sm font-semibold text-slate-600 rounded-xl hover:bg-slate-50 transition-colors">
                   Cancel
