@@ -1,7 +1,7 @@
-import Form from "./Form";
+// import Form from "./Form";
 
 export default function page() {
   return (
-    <div><Form/></div>
+    <div>page</div>
   )
 }
