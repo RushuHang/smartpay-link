@@ -87,7 +87,7 @@ export default function PaymentContainer({ paymentData }: PaymentContainerProps)
                     {isExpired
                       ? "Session Expired"
                       : selectedMethod
-                      ? "Complete Payment"
+                      ? "Complete Payment Method"
                       : "Select Payment Method"}
                   </h2>
                   {!selectedMethod && !isExpired && (

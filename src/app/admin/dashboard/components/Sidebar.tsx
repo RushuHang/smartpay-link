@@ -54,12 +54,12 @@ export default function Sidebar({ isOpen, close }: SidebarProps) {
           active={pathname === "/admin/dashboard"}
           onClick={() => handleNavigation("/admin/dashboard")}
         />
-        {/* <SidebarItem
+        <SidebarItem
           icon={<LinkIcon size={20} />}
-          label="Payment Link"
-          active={pathname === "/dashboard/payment-link"}
-          onClick={() => handleNavigation("/dashboard/payment-link")}
-        /> */}
+          label="User Management"
+          active={pathname === "/admin/dashboard/user-management"}
+          onClick={() => handleNavigation("/admin/dashboard/user-management")}
+        />
       </nav>
 
       
