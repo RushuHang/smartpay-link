@@ -70,7 +70,7 @@ export default function FilterPanel({ show, table, onClose, reset }: Props) {
               </div>
 
               {/* Date Filter */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <label className="text-xs font-medium text-slate-600 uppercase tracking-wide">
                   Date
                 </label>
@@ -86,7 +86,7 @@ export default function FilterPanel({ show, table, onClose, reset }: Props) {
                   }
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-slate-900"
                 />
-              </div>
+              </div> */}
             </div>
 
             {/* Footer */}
