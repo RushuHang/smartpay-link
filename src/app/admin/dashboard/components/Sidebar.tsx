@@ -8,6 +8,7 @@ import {
   Link as LinkIcon,
   User,
   Sparkles,
+  User as UserIcon,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -54,11 +55,11 @@ export default function Sidebar({ isOpen, close }: SidebarProps) {
           active={pathname === "/admin/dashboard"}
           onClick={() => handleNavigation("/admin/dashboard")}
         />
-        <SidebarItem
-          icon={<LinkIcon size={20} />}
+         <SidebarItem
+          icon={<UserIcon size={20} />}
           label="User Management"
-          active={pathname === "/admin/dashboard/user-management"}
-          onClick={() => handleNavigation("/admin/dashboard/user-management")}
+          active={pathname === "/admin/dashboard/users-management"}
+          onClick={() => handleNavigation("/admin/dashboard/users-management")}
         />
       </nav>
 

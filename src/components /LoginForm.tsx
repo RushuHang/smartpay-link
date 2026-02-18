@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
@@ -56,22 +56,16 @@ const onSubmit = async (data: FormData) => {
 
   return (
     <div className="w-full flex items-center justify-center p-4 lg:p-0">
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
+      <div
         className="w-full max-w-md bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 sm:p-10"
       >
         {/* Header Section */}
         <div className="text-center mb-10">
-          <motion.div 
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.2 }}
+          <div 
             className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-primary/10 mb-6 text-brand-primary"
           >
             <ShieldCheck size={28} />
-          </motion.div>
+          </div>
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
             Welcome back
           </h2>
@@ -152,7 +146,7 @@ const onSubmit = async (data: FormData) => {
 
           {/* Actions */}
           <div className="pt-2">
-            <motion.div whileTap={{ scale: 0.98 }}>
+            <div>
                 <Button 
                     type="submit" 
                     className="w-full h-12 text-base font-semibold shadow-lg shadow-brand-primary/25 hover:shadow-brand-primary/40 transition-all duration-300" 
@@ -160,7 +154,7 @@ const onSubmit = async (data: FormData) => {
                 >
                 Sign in
                 </Button>
-            </motion.div>
+            </div>
           </div>
         </form>
         
@@ -176,7 +170,7 @@ const onSubmit = async (data: FormData) => {
                 </Link>
             </p>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }

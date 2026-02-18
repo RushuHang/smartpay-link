@@ -80,9 +80,9 @@ export default function Sidebar({ isOpen, close }: SidebarProps) {
               </div>
             </div>
           </div>
-          <div className="p-1.5 rounded-lg bg-white/5 group-hover:bg-white/20 transition-colors duration-300">
+          {/* <div className="p-1.5 rounded-lg bg-white/5 group-hover:bg-white/20 transition-colors duration-300">
             <Sparkles className="w-3.5 h-3.5 text-white group-hover:text-yellow-200 transition-colors duration-300" />
-          </div>
+          </div> */}
         </div>
 
         {/* Progress Bar */}
