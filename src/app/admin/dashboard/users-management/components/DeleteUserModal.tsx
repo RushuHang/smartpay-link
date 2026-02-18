@@ -52,14 +52,14 @@ export default function DeleteUserModal({
                 <h3 className="text-lg font-bold text-slate-900">
                   Delete User?
                 </h3>
-                <p className="text-sm text-slate-500 mt-2 leading-relaxed">
+                <div className="text-sm text-slate-500 mt-2 leading-relaxed">
                   Are you sure you want to delete 
                  <div>
                     <span className="font-semibold text-slate-900">{userName}</span>? 
                   This action cannot be undone.
                  </div>
                   
-                </p>
+                </div>
               </div>
             </div>
 
