@@ -84,7 +84,7 @@ export default function UserDrawer({ isOpen, onClose }: Props) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-brand-navy/20 backdrop-blur-sm z-40"
+            className="fixed inset-0 bg-brand-navy/20  z-40"
           />
 
           {/* Drawer */}

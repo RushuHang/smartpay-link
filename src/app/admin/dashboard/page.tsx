@@ -344,7 +344,7 @@ export default function AdminDashboard() {
 
           <Col xs={24} lg={9}>
             <DashboardCard title="Recent Activity" extra={<Button type="text" icon={<MoreOutlined />} />}>
-              <Space direction="vertical" style={{ width: "100%" }}>
+              <Space orientation="vertical" style={{ width: "100%" }}>
                 {recentActivity.map((item, index) => (
                   <div
                     key={index}

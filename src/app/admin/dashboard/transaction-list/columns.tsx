@@ -1,18 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { 
-  ArrowUpDown, 
-  MoreHorizontal, 
-  Eye, 
-  RotateCcw, 
-  Clock, 
-  ExternalLink,
-  Copy
-} from "lucide-react";
+import { ArrowUpDown, Copy, Eye, RotateCcw } from "lucide-react";
 import { Transaction } from "./data";
 import StatusBadge from "./components/StatusBadge";
-import { useState } from "react";
+
+// --- DIRECT MODAL IMPORTS ---
+import { TransactionActionModal } from "./components/TransactionActionModal";
+import { TransactionDetailsModal } from "./components/TransactionDetailsModal";
+
+// Mock data for the details view
+const dummyTransactionDetails = {
+  customer: { name: "Aarav Sharma", email: "aarav.sharma@example.com", phone: "+977-9800000000" },
+  gateway: { id: "gw_txn_8989432423", provider: "eSewa", ip: "27.34.20.11" },
+  fees: { gross: 5000, net: 4858.75 }
+};
 
 export const getTransactionColumns = (): ColumnDef<Transaction>[] => [
   {
@@ -23,8 +26,11 @@ export const getTransactionColumns = (): ColumnDef<Transaction>[] => [
         <span className="font-mono text-[11px] font-bold text-slate-500 uppercase">
           {row.original.id}
         </span>
-        <button onClick={() => navigator.clipboard.writeText(row.original.id)}>
-          <Copy className="w-3 h-3 text-slate-300 hover:text-slate-600 transition-colors" />
+        <button 
+          onClick={() => navigator.clipboard.writeText(row.original.id)}
+          className="p-1 hover:bg-slate-100 rounded transition-colors group"
+        >
+          <Copy className="w-3 h-3 text-slate-300 group-hover:text-slate-600" />
         </button>
       </div>
     ),
@@ -88,25 +94,58 @@ export const getTransactionColumns = (): ColumnDef<Transaction>[] => [
   {
     accessorKey: "createdAt",
     header: "Date & Time",
-    cell: ({ row }) => (
-      <div className="flex flex-col text-slate-500">
-        <span className="text-xs font-medium text-slate-700">{row.original.createdAt.split(' ')[0]}</span>
-        <span className="text-[10px]">{row.original.createdAt.split(' ')[1]}</span>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const parts = row.original.createdAt.split(' ');
+      return (
+        <div className="flex flex-col text-slate-500">
+          <span className="text-xs font-medium text-slate-700">{parts[0]}</span>
+          <span className="text-[10px]">{parts[1]}</span>
+        </div>
+      );
+    },
   },
   {
     id: "actions",
     header: () => <div className="text-right pr-2">Actions</div>,
-    cell: ({ row }) => (
-      <div className="flex justify-end gap-1">
-        <button className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-900 transition-colors">
-          <Eye className="w-4 h-4" />
-        </button>
-        <button className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-blue-600 transition-colors">
-          <RotateCcw className="w-4 h-4" />
-        </button>
-      </div>
-    ),
+    cell: ({ row }) => {
+      // We define the state locally inside the cell component
+      const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+      const [isActionOpen, setIsActionOpen] = useState(false);
+      
+      const status = row.getValue("status") as string;
+      const isSuccess = status.toLowerCase() === "success";
+
+      return (
+        <div className="flex justify-end gap-1">
+          <button 
+            onClick={() => setIsDetailsOpen(true)}
+            className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-slate-900 transition-colors"
+          >
+            <Eye className="w-4 h-4" />
+          </button>
+
+          <button 
+            onClick={() => setIsActionOpen(true)}
+            className="p-1.5 hover:bg-slate-100 rounded text-slate-400 hover:text-blue-600 transition-colors"
+          >
+            <RotateCcw className="w-4 h-4" />
+          </button>
+
+          {/* Modals integrated directly */}
+          <TransactionDetailsModal 
+            isOpen={isDetailsOpen} 
+            onClose={() => setIsDetailsOpen(false)} 
+            data={dummyTransactionDetails} 
+          />
+
+          <TransactionActionModal 
+            isOpen={isActionOpen} 
+            onClose={() => setIsActionOpen(false)} 
+            isSuccess={isSuccess}
+            transactionId={row.original.id}
+          />
+        </div>
+      );
+    },
   },
 ];

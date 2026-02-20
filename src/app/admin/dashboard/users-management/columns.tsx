@@ -1,9 +1,8 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { 
   ArrowUpDown, 
-  MoreHorizontal, 
   Store, 
   Edit, 
   Trash2,
@@ -11,13 +10,107 @@ import {
   Ban,
   CheckCircle2
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+// Types and Components
 import { Merchant } from "./data";
 import StatusBadge from "./components/StatusBadge";
-import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
 import UpdateUserDrawer from "./components/UpdateUserDrawer"; 
 import DeleteUserModal from "./components/DeleteUserModal";
+import ApproveMerchantModal from "./components/ApproveMerchantModal";
 
+// --- Extracted Actions Component ---
+// We extract this so we can safely use React hooks like useRouter and useState
+const ActionsCell = ({ row }: { row: Row<Merchant> }) => {
+  const router = useRouter();
+  
+  // Manage state for all three dialogs
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isApproveOpen, setIsApproveOpen] = useState(false);
+
+  return (
+    <>
+      {/* Direct Action Buttons Container */}
+      <div className="flex items-center justify-end gap-1">
+        
+        {/* View Dashboard - Now navigates to the merchant's specific page */}
+        <button
+          title="View Dashboard"
+          className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+          onClick={() => {
+            // Adjust this route based on your actual Next.js folder structure
+            router.push(`/admin/dashboard/users-management/merchants/${row.original.id}`);
+          }}
+        >
+          <ExternalLink className="w-4 h-4" />
+        </button>
+
+        {/* Edit */}
+        <button
+          title="Edit Details"
+          onClick={() => setIsEditOpen(true)}
+          className="p-1.5 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
+        >
+          <Edit className="w-4 h-4" />
+        </button>
+
+        {/* Approve Merchant (Conditional) */}
+        {row.original.status === "Pending" && (
+          <button
+            title="Approve Merchant"
+            className="p-1.5 text-slate-400 hover:text-emerald-600 hover:bg-emerald-50 rounded-md transition-colors"
+            onClick={() => setIsApproveOpen(true)}
+          >
+            <CheckCircle2 className="w-4 h-4" />
+          </button>
+        )}
+
+        {/* Suspend Account */}
+        <button
+          title="Suspend Account"
+          onClick={() => setIsDeleteOpen(true)}
+          className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+        >
+          <Ban className="w-4 h-4" />
+        </button>
+      </div>
+
+      {/* Modals & Drawers */}
+      <UpdateUserDrawer
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        userToEdit={row.original as any} 
+        onSave={() => setIsEditOpen(false)}
+      />
+
+      <DeleteUserModal 
+        isOpen={isDeleteOpen}
+        onClose={() => setIsDeleteOpen(false)}
+        onConfirm={() => {
+          // Add your suspend logic here
+          console.log("Suspended:", row.original.id);
+          setIsDeleteOpen(false);
+        }}
+        userName={row.original.companyName}
+      />
+
+      <ApproveMerchantModal 
+        isOpen={isApproveOpen}
+        onClose={() => setIsApproveOpen(false)}
+        onConfirm={() => {
+          // Add your approve logic here
+          console.log("Approved:", row.original.id);
+          setIsApproveOpen(false);
+        }}
+        merchantName={row.original.companyName}
+      />
+    </>
+  );
+};
+
+// --- Column Definitions ---
 export const getColumns = (): ColumnDef<Merchant>[] => [
   {
     accessorKey: "companyName",
@@ -89,97 +182,7 @@ export const getColumns = (): ColumnDef<Merchant>[] => [
   {
     id: "actions",
     header: () => <div className="text-right pr-2">Actions</div>,
-    cell: ({ row }) => {
-      const [dropdownOpen, setDropdownOpen] = useState(false);
-      const [isEditOpen, setIsEditOpen] = useState(false);
-      const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-      
-      const dropdownRef = useRef<HTMLDivElement>(null);
-
-      useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-          if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-            setDropdownOpen(false);
-          }
-        }
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-      }, []);
-
-      return (
-        <>
-          <div className="flex justify-end relative" ref={dropdownRef}>
-            <button
-              onClick={() => setDropdownOpen((prev) => !prev)}
-              className={`p-1.5 rounded-md transition-all ${
-                dropdownOpen ? "bg-slate-100 text-slate-900" : "text-slate-400 hover:bg-slate-50 hover:text-slate-900"
-              }`}
-            >
-              <MoreHorizontal className="w-4 h-4" />
-            </button>
-
-            <AnimatePresence>
-              {dropdownOpen && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95, y: -5 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, y: -5 }}
-                  className="absolute right-0 top-full mt-1 w-48 bg-white rounded-lg shadow-xl z-30 border border-slate-100 overflow-hidden origin-top-right"
-                >
-                  <div className="py-1">
-                    <button
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
-                      onClick={() => { setDropdownOpen(false); /* Logic to view details */ }}
-                    >
-                      <ExternalLink className="w-4 h-4 text-slate-400" />
-                      View Dashboard
-                    </button>
-                    
-                    <button
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors"
-                      onClick={() => { setDropdownOpen(false); setIsEditOpen(true); }}
-                    >
-                      <Edit className="w-4 h-4 text-slate-400" />
-                      Edit Details
-                    </button>
-
-                    <div className="h-px bg-slate-100 my-1" />
-                    
-                    {row.original.status === "Pending" && (
-                      <button className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-emerald-600 hover:bg-emerald-50 transition-colors">
-                        <CheckCircle2 className="w-4 h-4" />
-                        Approve Merchant
-                      </button>
-                    )}
-
-                    <button
-                      className="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
-                      onClick={() => { setDropdownOpen(false); setIsDeleteOpen(true); }}
-                    >
-                      <Ban className="w-4 h-4" />
-                      Suspend Account
-                    </button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <UpdateUserDrawer
-            isOpen={isEditOpen}
-            onClose={() => setIsEditOpen(false)}
-            userToEdit={row.original as any} // Cast temporarily if types mismatch
-            onSave={() => setIsEditOpen(false)}
-          />
-
-          <DeleteUserModal 
-            isOpen={isDeleteOpen}
-            onClose={() => setIsDeleteOpen(false)}
-            onConfirm={() => setIsDeleteOpen(false)}
-            userName={row.original.companyName}
-          />
-        </>
-      );
-    },
+    // Inject our extracted component here
+    cell: ({ row }) => <ActionsCell row={row} />,
   },
 ];

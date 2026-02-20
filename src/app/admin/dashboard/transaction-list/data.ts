@@ -8,7 +8,7 @@ export interface Transaction {
   amount: number;
   status: TransactionStatus;
   createdAt: string;
-  paymentMethod: "Fonepay" | "eSewa" | "Khalti" | "connectIPS" | "Card";
+  paymentMethod: "Fonepay" | "eSewa" | "Khalti" | "smart pay" | "Card";
   gatewayReference: string; // The ID from the bank/gateway
 }
 
@@ -32,7 +32,7 @@ export const transactionData: Transaction[] = [
     amount: 12000,
     status: "Failed",
     createdAt: "2026-02-20 15:12:40",
-    paymentMethod: "connectIPS",
+    paymentMethod: "smart pay",
     gatewayReference: "CIPS-00912",
   },
   {

@@ -2,6 +2,8 @@
 
 import React, { useState, ChangeEvent } from "react";
 import { CreditCard, Lock, User, ShieldCheck } from "lucide-react";
+// Imported your custom Button component
+import { Button } from "@/components /ui/Button";
 
 interface CardFormProps {
   amount: string;
@@ -44,16 +46,16 @@ export default function CardForm({ amount, currency }: CardFormProps) {
     <div className="max-w-md mx-auto space-y-5 pt-2">
       {/* Trust Indicators */}
       <div className="flex gap-3 justify-center mb-6">
-  <div className="px-3 py-1 border border-gray-300 rounded text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
-    Visa
-  </div>
-  <div className="px-3 py-1 border border-gray-300 rounded text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
-    Mastercard
-  </div>
-  <div className="px-3 py-1 border border-gray-300 rounded text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
-    SCT
-  </div>
-</div>
+        <div className="px-3 py-1 border border-gray-300 rounded text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
+          Visa
+        </div>
+        <div className="px-3 py-1 border border-gray-300 rounded text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
+          Mastercard
+        </div>
+        <div className="px-3 py-1 border border-gray-300 rounded text-[10px] font-bold text-gray-500 uppercase tracking-tighter">
+          SCT
+        </div>
+      </div>
 
       {/* Card Number Field */}
       <div className="group space-y-1.5">
@@ -129,11 +131,15 @@ export default function CardForm({ amount, currency }: CardFormProps) {
 
       {/* Pay Button */}
       <div className="pt-2">
-        <button className="w-full bg-[#0066B3] hover:bg-[#004d87] text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-blue-900/10 transition-all active:scale-[0.98] relative overflow-hidden group">
-          <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+        {/* Replaced native <button> with custom <Button> */}
+        <Button 
+          type="button" // Adjust to "submit" if wrapping this in a <form> later
+          className="w-full bg-[#0066B3] hover:bg-[#004d87] text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-blue-900/10 transition-all active:scale-[0.98] relative overflow-hidden group"
+        >
+          {/* <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" /> */}
           <ShieldCheck size={20} className="relative z-10" />
           <span className="relative z-10">Confirm Payment {currency} {amount}</span>
-        </button>
+        </Button>
       </div>
 
       <div className="flex items-center justify-center gap-2 py-2">

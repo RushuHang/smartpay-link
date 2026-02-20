@@ -1,5 +1,6 @@
 import React from "react";
 import { ArrowRight, Globe } from "lucide-react";
+import { Button } from "@/components /ui/Button";
 
 export default function RedirectView({ method }: { method: string }) {
   const meta = {
@@ -42,13 +43,11 @@ export default function RedirectView({ method }: { method: string }) {
         We'll redirect you to your {meta.title} portal to securely authorize
         this payment.
       </p>
-      <button
-        className={`w-full max-w-xs ${
-          meta.color === "bg-white" ? "bg-[#0066B3]" : meta.color
-        } text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:brightness-110`}
+      <Button
+        className={`w-full max-w-xs text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:brightness-110`}
       >
         Login & Pay <ArrowRight size={16} />
-      </button>
+      </Button>
     </div>
   );
 }

@@ -1,18 +1,16 @@
+// columns.tsx
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
 import { 
-  ArrowUpDown, 
-  MoreHorizontal, 
   Link as LinkIcon, 
   Eye, 
-  ToggleLeft, 
-  ToggleRight,
-  BarChart3,
   Calendar
 } from "lucide-react";
 import { PaymentLink } from "./data";
 import StatusBadge from "./components/StatusBadge";
+import LinkAnalyticsModal from "./LinkAnalyticsModal";
+
 
 export const getLinkColumns = (): ColumnDef<PaymentLink>[] => [
   {
@@ -52,7 +50,7 @@ export const getLinkColumns = (): ColumnDef<PaymentLink>[] => [
         currency: "NPR",
         minimumFractionDigits: 0,
       }).format(row.original.amount);
-      return <div className="font-bold text-slate-900">{formatted.replace("NPR", "रू")}</div>;
+      return <div className="font-bold text-slate-900">{formatted.replace("NPR", "NPR")}</div>;
     },
   },
   {
@@ -91,18 +89,11 @@ export const getLinkColumns = (): ColumnDef<PaymentLink>[] => [
     ),
   },
   {
+    header: "Action",
     id: "actions",
     cell: ({ row }) => (
-      <div className="flex justify-end gap-2">
-        <button className="p-1.5 hover:bg-slate-100 rounded text-slate-500 hover:text-blue-600 transition-colors" title="Performance Stats">
-          <BarChart3 className="w-4 h-4" />
-        </button>
-        <button 
-          className={`p-1.5 rounded transition-colors ${row.original.status === 'Disabled' ? 'text-slate-300 hover:text-emerald-600' : 'text-slate-400 hover:text-red-600'}`}
-          title={row.original.status === 'Disabled' ? "Enable Link" : "Disable Link"}
-        >
-          {row.original.status === 'Disabled' ? <ToggleRight className="w-5 h-5" /> : <ToggleLeft className="w-5 h-5" />}
-        </button>
+      <div className="flex justify-center gap-2 items-center">
+        <LinkAnalyticsModal link={row.original} />
       </div>
     ),
   },

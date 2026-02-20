@@ -96,11 +96,6 @@ export default function Sidebar({ isOpen, close }: SidebarProps) {
       </nav>
 
       {/* Footer / Version (Optional) */}
-      <div className="mt-auto relative z-10 pl-2">
-        <p className="text-[10px] text-white/40 font-mono uppercase tracking-widest">
-          v1.0.0-MVP
-        </p>
-      </div>
     </aside>
   );
 }

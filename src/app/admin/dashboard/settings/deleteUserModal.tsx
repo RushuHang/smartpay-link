@@ -28,7 +28,7 @@ export default function DeleteUserModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-slate-900/40 "
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm"
           />
 
           {/* Modal Content */}
@@ -79,7 +79,7 @@ export default function DeleteUserModal({
                 className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-red-600 rounded-xl hover:bg-red-700 transition-colors shadow-sm shadow-red-200"
               >
                 <Trash2 className="w-4 h-4" />
-                Suspend User
+                Delete User
               </button>
             </div>
           </motion.div>

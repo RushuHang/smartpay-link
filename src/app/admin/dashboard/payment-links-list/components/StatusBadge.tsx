@@ -1,19 +1,22 @@
-import { CheckCircle2, Clock, Ban } from "lucide-react";
+import { CheckCircle2, Clock, Ban, DollarSign } from "lucide-react";
 import { cn } from "../utils";
 
-type StatusType = "Active" | "Suspended" | "Pending";
+// Export the new type so it can be used in your tables and data files
+export type LinkStatus = "Active" | "Expired" | "Paid" | "Disabled";
 
-export default function StatusBadge({ status }: { status: StatusType }) {
-  const styles: Record<StatusType, string> = {
-    Active: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    Pending: "bg-amber-50 text-amber-700 border-amber-200",
-    Suspended: "bg-rose-50 text-rose-700 border-rose-200",
+export default function StatusBadge({ status }: { status: LinkStatus }) {
+  const styles: Record<LinkStatus, string> = {
+    Active: "bg-blue-50 text-blue-700 border-blue-200",
+    Paid: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    Expired: "bg-amber-50 text-amber-700 border-amber-200",
+    Disabled: "bg-slate-100 text-slate-600 border-slate-200",
   };
 
-  const icons: Record<StatusType, React.ReactNode> = {
+  const icons: Record<LinkStatus, React.ReactNode> = {
     Active: <CheckCircle2 className="w-3.5 h-3.5" />,
-    Pending: <Clock className="w-3.5 h-3.5" />,
-    Suspended: <Ban className="w-3.5 h-3.5" />,
+    Paid: <DollarSign className="w-3.5 h-3.5" />,
+    Expired: <Clock className="w-3.5 h-3.5" />,
+    Disabled: <Ban className="w-3.5 h-3.5" />,
   };
 
   return (

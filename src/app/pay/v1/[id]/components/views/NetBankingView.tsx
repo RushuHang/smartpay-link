@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Search, CheckCircle2, ChevronRight } from "lucide-react";
+import { Button } from "@/components /ui/Button";
 
 // Added 'logo' property to the type definition implicitly by including it in the array
 const BANKS = [
@@ -102,16 +103,16 @@ export default function NetBankingView() {
       </div>
 
       <div className="pt-4 mt-auto border-t border-slate-100">
-        <button
+        <Button
           disabled={!selectedBank}
           className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all ${
             selectedBank
-              ? "bg-[#0066B3] hover:bg-[#003A66] text-white shadow-blue-900/10 active:scale-[0.98]"
+              ? " text-white shadow-blue-900/10 active:scale-[0.98]"
               : "bg-slate-100 text-slate-400 cursor-not-allowed"
           }`}
         >
           Proceed to Login <ChevronRight size={16} />
-        </button>
+        </Button>
       </div>
     </div>
   );

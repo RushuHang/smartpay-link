@@ -4,12 +4,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-// import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ShieldCheck, AlertCircle } from "lucide-react"; // Added AlertCircle
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // import router
+import { useRouter } from "next/navigation";
 
 // Zod Schema
 const formSchema = z.object({
@@ -23,47 +22,45 @@ type FormData = z.infer<typeof formSchema>;
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter(); //  initialize router
+  const [authError, setAuthError] = useState<string | null>(null); // New state for auth errors
+  const router = useRouter();
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: { rememberMe: false },
   });
-const onSubmit = async (data: FormData) => {
-  setIsLoading(true);
 
-  // Normalize email & password
-  const email = data.email.trim().toLowerCase();
-  const password = data.password.trim();
-  const submitData = { ...data, email, password, rememberMe: data.rememberMe ?? false };
+  const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
+    setAuthError(null); // Clear any previous errors when submitting
 
-  console.log("Login Data:", submitData);
+    // Normalize email & password
+    const email = data.email.trim().toLowerCase();
+    const password = data.password.trim();
+    
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  // Simulate API call
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+    setIsLoading(false);
 
-  setIsLoading(false);
-
-  // Conditional navigation
-  if (email === "admin@gmail.com" && password === "test12345") {
-    router.push("/admin/dashboard"); // Admin route
-  } else {
-    router.push("/dashboard"); // Regular user route
-  }
-};
-
-
+    // Conditional navigation for Admin and Merchant
+    if (email === "admin@gmail.com" && password === "test12345") {
+      router.push("/admin/dashboard"); 
+    } else if (email === "merchant@gmail.com" && password === "test12345") {
+      router.push("/dashboard");
+    } else {
+      // Set the error message instead of using alert()
+      setAuthError("Invalid credentials. Try admin@gmail.com or merchant@gmail.com and password test12345");
+    }
+  };
 
   return (
     <div className="w-full flex items-center justify-center p-4 lg:p-0">
-      <div
-        className="w-full max-w-md bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 sm:p-10"
-      >
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-8 sm:p-10">
+        
         {/* Header Section */}
         <div className="text-center mb-10">
-          <div 
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-primary/10 mb-6 text-brand-primary"
-          >
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-brand-primary/10 mb-6 text-brand-primary">
             <ShieldCheck size={28} />
           </div>
           <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
@@ -76,6 +73,15 @@ const onSubmit = async (data: FormData) => {
 
         {/* Form Section */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          
+          {/* Global Auth Error Message */}
+          {authError && (
+            <div className="flex items-center gap-2.5 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 animate-in fade-in slide-in-from-top-2 duration-300">
+              <AlertCircle size={18} className="shrink-0" />
+              <p className="text-sm font-medium">{authError}</p>
+            </div>
+          )}
+
           <div className="space-y-5">
             {/* Email Field */}
             <div className="group">
