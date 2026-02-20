@@ -1,9 +1,9 @@
 import { Table } from "@tanstack/react-table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Merchant } from "../data";
+import { Transaction } from "../data";
 
 interface Props {
-  table: Table<Merchant>;
+  table: Table<Transaction>;
   totalCount: number;
 }
 

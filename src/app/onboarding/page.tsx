@@ -3,7 +3,6 @@
 import { useOnboarding } from "@/context/OnboardingContext";
 import { Step1BusinessInfo } from "./components/onboarding/Step1BusinessInfo";
 import { Step2Address } from "./components/onboarding/Step2Address";
-// import { Step3Transaction } from "./components/onboarding/Step3Transaction";
 import { Step4KYC } from "./components/onboarding/Step4KYC";
 import { Step5Owners } from "./components/onboarding/Step5Owners";
 import { Step6BankAccount } from "./components/onboarding/Step6BankAccount";

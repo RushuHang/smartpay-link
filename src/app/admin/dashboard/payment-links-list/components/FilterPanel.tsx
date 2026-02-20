@@ -3,12 +3,12 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { Table } from "@tanstack/react-table";
-import { Merchant } from "../data";
+import { PaymentLink } from "../data";
 import { Button } from "@/components /ui/Button";
 
 interface Props {
   show: boolean;
-  table: Table<Merchant>;
+  table: Table<PaymentLink>;
   onClose: () => void;
   reset: () => void;
 }

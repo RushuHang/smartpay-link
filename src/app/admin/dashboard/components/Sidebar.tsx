@@ -5,12 +5,13 @@ import SidebarItem from "./SidebarItem";
 import {
   ShieldCheck,
   LayoutDashboard,
-  Link as LinkIcon,
-  User,
-  Sparkles,
-  User as UserIcon,
+  Users, // For Merchant/User Management
+  Receipt, // For Transactions
+  Link2, // For Payment Links
+  Settings, // For Settings
+  History, // For Logs
+  ArrowLeftRight, // Alternative for Transactions
 } from "lucide-react";
-import Link from "next/link";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -38,10 +39,10 @@ export default function Sidebar({ isOpen, close }: SidebarProps) {
 
       {/* Clickable Logo */}
       <div
-        className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer"
-        onClick={() => handleNavigation("/dashboard")}
+        className="relative z-10 flex items-center gap-3 mb-12 pl-2 cursor-pointer group"
+        onClick={() => handleNavigation("/admin/dashboard")}
       >
-        <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10">
+        <div className="p-2 bg-white/10 rounded-xl backdrop-blur-sm border border-white/10 group-hover:bg-white/20 transition-all">
           <ShieldCheck className="w-6 h-6 text-white" />
         </div>
         <span className="text-xl font-bold tracking-tight">Smart Link</span>
@@ -55,15 +56,51 @@ export default function Sidebar({ isOpen, close }: SidebarProps) {
           active={pathname === "/admin/dashboard"}
           onClick={() => handleNavigation("/admin/dashboard")}
         />
-         <SidebarItem
-          icon={<UserIcon size={20} />}
-          label="User Management"
+
+        <SidebarItem
+          icon={<Users size={20} />}
+          label="Merchants"
           active={pathname === "/admin/dashboard/users-management"}
           onClick={() => handleNavigation("/admin/dashboard/users-management")}
         />
+
+        <SidebarItem
+          icon={<ArrowLeftRight size={20} />}
+          label="Transactions"
+          active={pathname === "/admin/dashboard/transaction-list"}
+          onClick={() => handleNavigation("/admin/dashboard/transaction-list")}
+        />
+
+        <SidebarItem
+          icon={<Link2 size={20} />}
+          label="Payment Links"
+          active={pathname === "/admin/dashboard/payment-links-list"}
+          onClick={() => handleNavigation("/admin/dashboard/payment-links-list")}
+        />
+
+        <div className="my-4 h-px bg-white/10 mx-2" />
+
+        <SidebarItem
+          icon={<Settings size={20} />}
+          label="Settings"
+          active={pathname === "/admin/dashboard/settings"}
+          onClick={() => handleNavigation("/admin/dashboard/settings")}
+        />
+
+        <SidebarItem
+          icon={<History size={20} />}
+          label="Audit Logs"
+          active={pathname === "/admin/dashboard/logs"}
+          onClick={() => handleNavigation("/admin/dashboard/logs")}
+        />
       </nav>
 
-      
+      {/* Footer / Version (Optional) */}
+      <div className="mt-auto relative z-10 pl-2">
+        <p className="text-[10px] text-white/40 font-mono uppercase tracking-widest">
+          v1.0.0-MVP
+        </p>
+      </div>
     </aside>
   );
 }

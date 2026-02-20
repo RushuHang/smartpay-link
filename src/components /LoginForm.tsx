@@ -9,7 +9,7 @@ import { Mail, Lock, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { Input } from "./ui/Input";
 import { Button } from "./ui/Button";
 import Link from "next/link";
-import { useRouter } from "next/navigation"; // ✅ import router
+import { useRouter } from "next/navigation"; // import router
 
 // Zod Schema
 const formSchema = z.object({
@@ -23,7 +23,7 @@ type FormData = z.infer<typeof formSchema>;
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter(); // ✅ initialize router
+  const router = useRouter(); //  initialize router
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema),

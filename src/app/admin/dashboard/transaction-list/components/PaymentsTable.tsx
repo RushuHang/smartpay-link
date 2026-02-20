@@ -2,10 +2,10 @@ import { flexRender, Table } from "@tanstack/react-table";
 import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 import { cn } from "../utils";
-import { Merchant } from "../data";
+import { Transaction } from "../data";
 
 interface Props {
-  table: Table<Merchant>;
+  table: Table<Transaction>;
   columnsLength: number;
   resetFilters: () => void;
 }

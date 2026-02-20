@@ -143,12 +143,11 @@ const StatCard = ({ title, value, prefix, icon }: any) => {
             prefix={prefix}
             styles={{
               content:{
-color: colors.navy,
-              fontWeight: 700,
-              fontSize: screens.lg ? "28px" : screens.md ? "26px" : "24px",
-              lineHeight: 1.2,
+                color: colors.navy,
+                fontWeight: 700,
+                fontSize: screens.lg ? "28px" : screens.md ? "26px" : "24px",
+                lineHeight: 1.2,
               }
-              
             }}
           />
         </div>
@@ -285,11 +284,10 @@ export default function MerchantDashboard() {
                 suffix={<span style={{fontSize: '14px', marginLeft: 4}}>/ 100 Links</span>}
                 styles={{ 
                   content:{
- color: colors.white, 
-                  fontSize: screens.lg ? "28px" : "24px",
-                  fontWeight: 700 
+                    color: colors.white, 
+                    fontSize: screens.lg ? "28px" : "24px",
+                    fontWeight: 700 
                   }
-                 
                 }}
               />
               <div style={{ marginTop: "12px" }}>
@@ -303,11 +301,11 @@ export default function MerchantDashboard() {
         <Row gutter={gutter} style={{ marginTop: screens.md ? "24px" : "16px" }}>
           
           {/* 1. REVENUE CHART */}
-          {/* Strategy: Full width on mobile/tablet, Half width on Desktop */}
           <Col xs={24} md={24} lg={12}>
             <DashboardCard title="Revenue Trends">
-              <div style={{ height: chartHeight, width: "100%", minWidth: 0 }}>
-                <ResponsiveContainer width="100%" height="100%">
+              <div style={{ width: "100%", minWidth: 0 }}>
+                {/* FIX: Passed chartHeight directly to ResponsiveContainer */}
+                <ResponsiveContainer width="100%" height={chartHeight}>
                   <AreaChart data={chartData} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                     <defs>
                       <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
@@ -321,7 +319,7 @@ export default function MerchantDashboard() {
                       axisLine={false}
                       tickLine={false}
                       tick={{ fill: colors.textSecondary, fontSize: 12 }}
-                      interval="preserveStartEnd" // Prevents text overlap on small screens
+                      interval="preserveStartEnd"
                     />
                     <YAxis
                       axisLine={false}
@@ -350,11 +348,11 @@ export default function MerchantDashboard() {
           </Col>
 
           {/* 2. PAYMENT METHODS PIE CHART */}
-          {/* Strategy: Full width Mobile, Half width Tablet (stacked under Revenue), Quarter width Desktop */}
           <Col xs={24} md={12} lg={6}>
             <DashboardCard title="Payment Methods">
-              <div style={{ height: pieHeight, width: "100%", minWidth: 0 }}>
-                <ResponsiveContainer width="100%" height="100%">
+              <div style={{ width: "100%", minWidth: 0 }}>
+                {/* FIX: Passed pieHeight directly to ResponsiveContainer */}
+                <ResponsiveContainer width="100%" height={pieHeight}>
                   <PieChart>
                     <Pie
                       data={paymentData}
@@ -439,7 +437,6 @@ export default function MerchantDashboard() {
                         borderBottom: index < 2 ? "1px solid #f0f0f0" : "none",
                       }}
                     >
-                      {/* min-width: 0 is essential for text-overflow to work in flex children */}
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
                         <div
                           style={{
