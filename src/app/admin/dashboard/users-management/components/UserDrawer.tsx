@@ -99,10 +99,10 @@ export default function UserDrawer({ isOpen, onClose }: Props) {
             <div className="flex items-center justify-between px-4 py-4 md:px-8 md:py-6 bg-white border-b border-slate-100">
               <div>
                 <h2 className="text-lg md:text-xl font-bold text-brand-navy tracking-tight">
-                  New User
+                  New Merchant
                 </h2>
                 <p className="text-xs md:text-sm text-slate-500 mt-1">
-                  Create a new system user
+                  Create a new merchant
                 </p>
               </div>
               <button

@@ -61,7 +61,7 @@ export default function TransactionsPage() {
 
         {/* Mini Stats Summary */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <SummaryCard title="Total Volume" value="रू 1,24,500" icon={<Activity className="text-blue-600"/>} />
+          <SummaryCard title="Total Volume" value="NPR 1,24,500" icon={<Activity className="text-blue-600"/>} />
           <SummaryCard title="Success Rate" value="98.2%" icon={<CheckCircle2 className="text-emerald-600"/>} />
           <SummaryCard title="Active Links" value="142" icon={<CreditCard className="text-purple-600"/>} />
         </div>

@@ -70,7 +70,7 @@ export const getTransactionColumns = (): ColumnDef<Transaction>[] => [
       }).format(row.original.amount);
       return (
         <div className="text-right font-bold text-slate-900 tabular-nums">
-          {formatted.replace("NPR", "रू")}
+          {formatted.replace("NPR", "NPR")}
         </div>
       );
     },

@@ -29,7 +29,7 @@ export const logData: SystemLog[] = [
     performedByRole: "System",
     timestamp: "2026-02-20 17:30:05",
     targetId: "TXN-9901",
-    details: "रू 4,500 processed via Fonepay for Bikers Point",
+    details: "NPR 4,500 processed via Fonepay for Bikers Point",
   },
   {
     id: "LOG-003",

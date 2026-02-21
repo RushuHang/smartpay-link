@@ -14,7 +14,7 @@ import {
   Phone,
   Calendar
 } from "lucide-react";
-import StatusBadge from "../../components/StatusBadge";
+import StatusBadge from "../../dashboard/users-management/components/StatusBadge";
 
 // --- Dummy Data ---
 const DUMMY_MERCHANT = {

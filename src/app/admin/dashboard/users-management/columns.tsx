@@ -41,7 +41,7 @@ const ActionsCell = ({ row }: { row: Row<Merchant> }) => {
           className="p-1.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
           onClick={() => {
             // Adjust this route based on your actual Next.js folder structure
-            router.push(`/admin/dashboard/users-management/merchants/${row.original.id}`);
+            router.push(`/admin/merchants/${row.original.id}`);
           }}
         >
           <ExternalLink className="w-4 h-4" />
