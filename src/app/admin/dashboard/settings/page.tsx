@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Settings, ShieldCheck, Mail, Percent, Save, Trash2, UserPlus, Check } from "lucide-react";
 import { Button } from "@/components /ui/Button"; 
-import { adminUsers } from "./data";
+import { adminUsers, AdminAccount } from "./data";
 import DeleteUserModal from "./deleteUserModal"; 
 import AddAdminModal from "./AddAdminModal";
 
@@ -14,7 +14,7 @@ export default function SettingsPage() {
   const [refundsEnabled, setRefundsEnabled] = useState(true);
 
   // Admins State (initialized with your mock data)
-  const [admins, setAdmins] = useState(adminUsers);
+  const [admins, setAdmins] = useState<AdminAccount[]>(adminUsers);
 
   // Delete Modal State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,10 +25,22 @@ export default function SettingsPage() {
 
   // --- Handlers ---
 
-  // Add Admin Handler
-  const handleAddAdmin = (newAdmin: { id: string; name: string; email: string; role: string }) => {
+  // ✅ FIX: Added "Compliance" to the role type to match the AddAdminModal
+  const handleAddAdmin = (newAdmin: { 
+    id: string; 
+    name: string; 
+    email: string; 
+    role: "Super Admin" | "Support" | "Compliance" 
+  }) => {
     // In a real app, this would be an API call (POST)
-    setAdmins((prev) => [...prev, newAdmin]);
+    
+    // Construct the full AdminAccount object to satisfy TypeScript
+    const newAdminRecord: AdminAccount = {
+      ...newAdmin,
+      lastLogin: "Never", // Default value for a newly created account
+    };
+
+    setAdmins((prev) => [...prev, newAdminRecord]);
   };
 
   // Delete Admin Handlers
@@ -46,6 +58,7 @@ export default function SettingsPage() {
     if (adminToDelete) {
       // In a real app, this would be an API call (DELETE)
       setAdmins((prev) => prev.filter((admin) => admin.id !== adminToDelete.id));
+      closeDeleteModal(); // Don't forget to close the modal after deleting!
     }
   };
 
@@ -202,19 +215,23 @@ export default function SettingsPage() {
       {/* --- Modals --- */}
       
       {/* Delete User Confirmation Modal */}
-      <DeleteUserModal
-        isOpen={isDeleteModalOpen}
-        onClose={closeDeleteModal}
-        onConfirm={handleConfirmDelete}
-        userName={adminToDelete?.name}
-      />
+      {isDeleteModalOpen && (
+        <DeleteUserModal
+          isOpen={isDeleteModalOpen}
+          onClose={closeDeleteModal}
+          onConfirm={handleConfirmDelete}
+          userName={adminToDelete?.name}
+        />
+      )}
 
       {/* Add New Admin Modal */}
-      <AddAdminModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onAdd={handleAddAdmin}
-      />
+      {isAddModalOpen && (
+        <AddAdminModal
+          isOpen={isAddModalOpen}
+          onClose={() => setIsAddModalOpen(false)}
+          onAdd={handleAddAdmin}
+        />
+      )}
     </div>
   );
 }

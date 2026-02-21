@@ -23,7 +23,7 @@ const DUMMY_MERCHANT = {
   name: "Sarah Jenkins",
   email: "sarah.j@techflow.io",
   contactNumber: "+977 980-1234567",
-  status: "Active",
+  status: "Active" as const, // <--- Add 'as const' here
   joinedDate: "Oct 12, 2024",
   stats: {
     totalRevenue: 452800.50,

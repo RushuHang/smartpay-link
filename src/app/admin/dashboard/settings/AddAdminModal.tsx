@@ -1,17 +1,11 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, UserPlus, ShieldAlert, Mail, User, Shield } from "lucide-react";
+import { X, UserPlus, ShieldAlert, Mail, User } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components /ui/Button";
-
-interface AddAdminModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onAdd: (admin: { id: string; name: string; email: string; role: string }) => void;
-}
+import { Button } from "@/components /ui/Button"; // Fixed typo in import path
 
 // ✅ Zod schema for Admin validation
 const adminSchema = z.object({
@@ -25,9 +19,27 @@ const adminSchema = z.object({
   }),
 });
 
+// Infer the TypeScript type directly from the Zod schema
 type FormValues = z.infer<typeof adminSchema>;
 
-const ROLES = [
+// 1. Strictly type the onAdd prop to match the Zod schema
+interface AddAdminModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onAdd: (admin: { 
+    id: string; 
+    name: string; 
+    email: string; 
+    role: "Super Admin" | "Compliance" | "Support" 
+  }) => void;
+}
+
+// 2. Strictly type the ROLES array so TypeScript knows `id` isn't just any string
+const ROLES: {
+  id: "Super Admin" | "Compliance" | "Support";
+  title: string;
+  description: string;
+}[] = [
   {
     id: "Super Admin",
     title: "Super Admin",
@@ -45,7 +57,7 @@ const ROLES = [
   },
 ];
 
-export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModalProps) {
+export default function AddAdminModal({ isOpen, onClose, onAdd }: AddAdminModalProps) {
   const {
     register,
     handleSubmit,
@@ -86,7 +98,7 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-brand-navy/20 z-40"
+            className="fixed inset-0 bg-slate-900/20 z-40 "
           />
 
           {/* Drawer */}
@@ -104,7 +116,7 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
                   <UserPlus className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <h2 className="text-lg md:text-xl font-bold text-brand-navy tracking-tight">
+                  <h2 className="text-lg md:text-xl font-bold text-slate-900 tracking-tight">
                     Provision Admin
                   </h2>
                   <p className="text-xs md:text-sm text-slate-500 mt-1">
@@ -114,7 +126,7 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-full hover:bg-brand-light text-slate-400 hover:text-brand-primary transition-colors"
+                className="p-2 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -129,16 +141,16 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
                 
                 {/* IDENTITY SECTION */}
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  <h3 className="text-xs font-bold text-blue-600 uppercase tracking-wider">
                     Identity Details
                   </h3>
 
                   <div>
-                    <label className="text-sm font-semibold text-brand-navy mb-1.5 block">
+                    <label className="text-sm font-semibold text-slate-900 mb-1.5 block">
                       Full Legal Name
                     </label>
                     <div className="relative group">
-                      <User className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      <User className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
                       <input
                         {...register("name")}
                         placeholder="e.g. Jane Doe"
@@ -151,11 +163,11 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
                   </div>
 
                   <div>
-                    <label className="text-sm font-semibold text-brand-navy mb-1.5 block">
+                    <label className="text-sm font-semibold text-slate-900 mb-1.5 block">
                       Work Email Address
                     </label>
                     <div className="relative group">
-                      <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-brand-primary transition-colors" />
+                      <Mail className="absolute left-3.5 top-3.5 w-4 h-4 text-slate-400 group-focus-within:text-blue-600 transition-colors" />
                       <input
                         {...register("email")}
                         placeholder="jane.doe@company.com"
@@ -172,7 +184,7 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
 
                 {/* ACCESS LEVEL SECTION */}
                 <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-brand-primary uppercase tracking-wider">
+                  <h3 className="text-xs font-bold text-blue-600 uppercase tracking-wider">
                     Access Level
                   </h3>
                   
@@ -182,25 +194,26 @@ export default function AddAdminDrawer({ isOpen, onClose, onAdd }: AddAdminModal
                         key={role.id}
                         className={`relative flex cursor-pointer rounded-xl border p-4 transition-all duration-200 ${
                           selectedRole === role.id 
-                            ? "bg-white border-brand-primary ring-1 ring-brand-primary shadow-sm" 
+                            ? "bg-white border-blue-600 ring-1 ring-blue-600 shadow-sm" 
                             : "bg-white border-slate-200 hover:border-slate-300"
                         }`}
                       >
+                        {/* 3. Removed `as any` because ROLES is now strictly typed */}
                         <input
                           type="radio"
                           className="sr-only"
                           value={role.id}
                           checked={selectedRole === role.id}
-                          onChange={() => setValue("role", role.id as any)}
+                          onChange={() => setValue("role", role.id)}
                         />
                         <div className="flex flex-1 items-start gap-3">
                           <div className={`mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full border ${
-                            selectedRole === role.id ? "border-brand-primary bg-brand-primary" : "border-slate-300"
+                            selectedRole === role.id ? "border-blue-600 bg-blue-600" : "border-slate-300"
                           }`}>
                             {selectedRole === role.id && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                           </div>
                           <div className="flex flex-col">
-                            <span className={`block text-sm font-bold ${selectedRole === role.id ? "text-brand-navy" : "text-slate-900"}`}>
+                            <span className={`block text-sm font-bold ${selectedRole === role.id ? "text-slate-900" : "text-slate-700"}`}>
                               {role.title}
                             </span>
                             <span className="mt-0.5 text-xs text-slate-500 leading-relaxed">

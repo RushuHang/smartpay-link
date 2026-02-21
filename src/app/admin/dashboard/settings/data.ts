@@ -10,7 +10,7 @@ export interface AdminAccount {
   id: string;
   name: string;
   email: string;
-  role: "Super Admin" | "Support";
+  role: "Super Admin" | "Support" | "Compliance";
   lastLogin: string;
 }
 
